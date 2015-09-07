@@ -67,7 +67,7 @@ printf "\n## 2) parse ms output file"
 
 ## 3) compute sats
 printf "\n## 3) compute sats"
-msums -i spinput_${suf}.txt -o ABCstat_${suf}.txt
+msums -i spinput_${suf}.txt -S all -o ABCstat_${suf}.txt
 
 
 ## z) display time
