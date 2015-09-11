@@ -30,6 +30,8 @@ using SimGenerator
 
 	# total number of simulations performed by ms
 	@par n_simulations 	n_repl * n_loci
+	# add constraints on number of segsites per RAD tag (msnseg parameter -S, -M and -Z, respectively)
+	@par snps 			[1, 4, 15]
 	# For more than one population sample sizes are given as a list.
 	@par n_samples		[5, 5, 5, 5]	# 5 chromosomes per population
 	@par theta			theta0
@@ -38,16 +40,12 @@ using SimGenerator
 	@par N				[TBS, TBS, TBS, TBS]
 	# migration: only M12, M21, M23, M32, M34 and M43 are relevant here.
 	@par mig			[ [NaN TBS 0 0]; [TBS NaN TBS 0]; [0 TBS NaN TBS]; [0 0 TBS NaN] ]
-	@par history		[ 	[:time => TBS, :type => :join, :pops => [2, 1]]
-				     		[:time => TBS, :type => :join, :pops => [4, 3]]
-				     		[:time => TBS, :type => :join, :pops => [3, 1]]	]
-
-#	@par history		[ 	[:time => TBS, :type => :join, :pops => [2, 1]],
-#							[:time => TBS, :type => :num, :sizes => [[1, TBS]]],
-#				     		[:time => TBS, :type => :join, :pops => [4, 3]],
-#							[:time => TBS, :type => :num, :sizes => [[3, TBS]]],
-#				     		[:time => TBS, :type => :join, :pops => [3, 1]],
-#							[:time => TBS, :type => :num, :sizes => [[1, TBS]]]	]
+	@par history		[ 	[:time => TBS, :type => :join, :pops => [2, 1]],
+							[:time => TBS, :type => :num, :sizes => [1 => TBS]],
+				     		[:time => TBS, :type => :join, :pops => [4, 3]],
+							[:time => TBS, :type => :num, :sizes => [3 => TBS]],
+				     		[:time => TBS, :type => :join, :pops => [3, 1]],
+							[:time => TBS, :type => :num, :sizes => [1 => TBS]]	]
 end
 
 # Dataset of n_loci independent loci: what differ between datasets? [REQUIRED].
@@ -74,8 +72,7 @@ end
 	h2 = rand() * (1 - 0.5)  + 0.5	 # 4*[0.5 - 1]*N0
 	max_intraT = max(h1, h2)
 	h3 = rand() * (5 - max_intraT) + max_intraT	# 4*[0.5 - 5]*N0, h3 > h1 & h3 > h2
-	@par history		[h1, h2, h3]
-#	@par history		[h1, h1, n21, h2, h2, n43, h3, h3, n31]
+	@par history		[h1, h1, n21, h2, h2, n43, h3, h3, n31]
 end
 
 # Set parameters across loci within datasets. If any varies, it has to be set here. [REQUIRED].
@@ -101,7 +98,7 @@ end
 	# true for all parameters).
 	@par N				4
 	@par mig			6
-	@par history		3
+	@par history		9
 
 end
 
@@ -115,7 +112,7 @@ end
 	@ms_out			"ms-ali_" * suf * ".txt"
 	@priors_out		"priors_" * suf * ".txt"
 	@spinput_out	"spinput_" * suf * ".txt"
-	@command		"msnsam"
+	@command		"msnseg"
 end
 
 
