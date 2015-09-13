@@ -44,8 +44,12 @@ echo $jobid
 echo "# taskid:"
 echo $taskid
 
+## 1) set simulation variables
+n_dataset=100
+n_loc=60000
 
-## 1) run simulations
+
+## 2) run simulations
 printf "\n## 1) run simulations"
 rand_seed=${taskid}${jobid}
 echo "random seed:"
@@ -54,15 +58,6 @@ printf "${rand_seed}"
 suf=full_interspeMig.${jobid}.${taskid}
 printf "\n./runSim.sh full_interspeMig.jl ${rand_seed} ${suf}"
 ./runSim.sh full_interspeMig.jl ${rand_seed} ${suf}
-
-
-## 2) parse ms output file
-printf "\n## 2) parse ms output file"
-#WARNING - TODO
-    #- parse the ms outputs
-    #- write a modified ms output
-    #- modify prior file accordingly
-    #- write a modified spinput (to compute stats)
 
 
 ## 3) compute sats

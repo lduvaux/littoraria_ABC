@@ -18,7 +18,7 @@ using SimGenerator
 	# r = 0		# recombination rate, not needed here
 	n_sites = 82	# tag length
 	n_repl = 10 # number of datasets (i.e. dataset simulations).
-	n_loci = 10	# We want to simulate several loci.
+	n_loci = 5	# We want to simulate several loci.
 	theta0 = 4 * n0 * mu * n_sites
 
 	# get some values from the command line

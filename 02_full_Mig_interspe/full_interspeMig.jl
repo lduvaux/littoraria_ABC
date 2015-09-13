@@ -13,20 +13,19 @@ using SimGenerator
 @setup MSSimulation begin
 
 #	some global variable (accessible throughout the entire file).
-	n0 = 1e5	# size of reference population
-	mu = 1.5e-9	# mutation rate
+	n0 = 1e4	# size of reference population: 10,000
+	mu = 3e-9	# mutation rate
 	# r = 0		# recombination rate, not needed here
 	n_sites = 82	# tag length
-	n_repl = int(ARGS[2]) # number of datasets (i.e. dataset simulations).
-	n_loci = 10	# We want to simulate several loci.
+	n_repl = int(ARGS[1])	# number of datasets (i.e. dataset simulations).
+	n_loci = int(ARGS[2])	# number of loci per dataset
 	theta0 = 4 * n0 * mu * n_sites
 
 	# get some values from the command line
 		# here the random seed
-	srand(int(ARGS[2]))
-	# can be whatever though, we can also be
-		# suffix for outputs
-	suf = "DistSegSites"
+	srand(int(ARGS[3]))
+	# suffix of th egenerated files
+	suf = "fullModel_interMig"
 
 	# total number of simulations performed by ms
 	@par n_simulations 	n_repl * n_loci
@@ -40,7 +39,9 @@ using SimGenerator
 	@par N				[TBS, TBS, TBS, TBS]
 	# migration: only M12, M21, M23, M32, M34 and M43 are relevant here.
 	@par mig			[ [NaN TBS 0 0]; [TBS NaN TBS 0]; [0 TBS NaN TBS]; [0 0 TBS NaN] ]
-	@par history		[ 	[:time => TBS, :type => :join, :pops => [2, 1]],
+	@par history		[ 	[:time => TBS, :type => :mig, :rates => [2, 3, 0]],
+							[:time => TBS, :type => :mig, :rates => [3, 2, 0]],
+							[:time => TBS, :type => :join, :pops => [2, 1]],
 							[:time => TBS, :type => :num, :sizes => [1 => TBS]],
 				     		[:time => TBS, :type => :join, :pops => [4, 3]],
 							[:time => TBS, :type => :num, :sizes => [3 => TBS]],
@@ -52,27 +53,39 @@ end
 @level dataset begin
 	@range n_repl
 
-	# Uniform priors on Ni=[0.5-5]*N0
-	@par N				[rand() * (5 - 0.5) + 0.5, rand() * (5 - 0.5) + 0.5, rand() * (5 - 0.5) + 0.5, rand() * (5 - 0.5) + 0.5]
+	# Uniform priors on Ni=[5e4-5e5]=[5-50]*N0
+	N1 = rand() * (50 - 5) + 5
+	N2 = rand() * (50 - 5) + 5
+	N3 = rand() * (50 - 5) + 5
+	N4 = rand() * (50 - 5) + 5
+	@par N				[N1, N2, N3, N4]
 	
 	# Uniform priors on migration rates Mij: inter-spe [0-2], intra-spe[0-10]
-	M23 = rand() * 2	# inter-spe
-	M32 = rand() * 2	# inter-spe
-	M12 = rand() * 10	# intra-spe
-	M21 = rand() * 10	# intra-spe
-	M34 = rand() * 10	# intra-spe
-	M43 = rand() * 10	# intra-spe
+	M23 = rand() * 2	# inter-spe, M23 = M32
+	M32 = M23
+	M12 = rand() * 10	# intra-spe: all equals
+	M21 = M12			#
+	M34 = M12			#
+	M43 = M12			#
 	@par mig			[M12, M21, M23, M32, M34, M43]
 	
-	# uniform priors on historical events with h3 > h1 & h3 > h2
-	n21 = rand() * (5 - 0.5) + 0.5
-	n43 = rand() * (5 - 0.5) + 0.5
-	n31 = rand() * (5 - 0.5) + 0.5
-	h1 = rand() * (1 - 0.5)  + 0.5	# 4*[0.5 - 1]*N0
-	h2 = rand() * (1 - 0.5)  + 0.5	 # 4*[0.5 - 1]*N0
-	max_intraT = max(h1, h2)
-	h3 = rand() * (5 - max_intraT) + max_intraT	# 4*[0.5 - 5]*N0, h3 > h1 & h3 > h2
-	@par history		[h1, h1, n21, h2, h2, n43, h3, h3, n31]
+	# uniform priors on historical events (in years): with T3 > T1 & T3 > T2
+	T1 = rand() * (50e3 - 1e3) + 1e3	# [1e3 - 5e4] years
+	T2 = rand() * (1e6 - T1) + T1	# [1e3 - 1e6] years, T2 > T1
+	T3 = rand() * (1e6 - T1) + T1	# [1e3 - 1e6] years, T3 > T1
+	maxT = max(T2, T3) # take care that T4 always > T3 and T2 as ms won't raise any warning!
+	low_bd = max(maxT, 5e5)	# take care that the maxi has to be > 5e5 (lower bound of the prior)
+	T4 = rand() * (5e6 - low_bd) + low_bd	# [5e5 - 5e6], T4 > max(T2, T3)
+		# convert times in unit of 4N0 generations! (1 generation a year)
+	T1 = T1 / (4 * n0)
+	T2 = T2 / (4 * n0)
+	T3 = T3 / (4 * n0)
+	T4 = T4 / (4 * n0)
+		# ancestral pop sizes
+	N5 = rand() * (50 - 5) + 5 # Na=[5e4-5e5]=[5-50]*N0
+	N6 = N5
+	N7 = N5
+	@par history		[T1, T1, T2, T2, N5, T3, T3, N6, T4, T4, N7]
 end
 
 # Set parameters across loci within datasets. If any varies, it has to be set here. [REQUIRED].
@@ -98,7 +111,7 @@ end
 	# true for all parameters).
 	@par N				4
 	@par mig			6
-	@par history		9
+	@par history		11
 
 end
 
