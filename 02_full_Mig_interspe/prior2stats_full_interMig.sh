@@ -45,8 +45,8 @@ echo "# taskid:"
 echo $taskid
 
 ## 1) set simulation variables
-n_dataset=100
-n_loc=60000
+nrep=100    # number of datasets to be simulated
+nloc=60000    # number of loci to simulate per dataset
 
 
 ## 2) run simulations
@@ -57,12 +57,17 @@ printf "${rand_seed}"
 
 suf=full_interspeMig.${jobid}.${taskid}
 printf "\n./runSim.sh full_interspeMig.jl ${rand_seed} ${suf}"
-./runSim.sh full_interspeMig.jl ${rand_seed} ${suf}
+./runSim.sh full_interspeMig.jl ${nrep} ${nloc} ${rand_seed} ${suf}
 
 
 ## 3) compute sats
 printf "\n## 3) compute sats"
 msums -i spinput_${suf}.txt -S all -o ABCstat_${suf}.txt
+
+
+## 4) check number of incorrect datasets
+grep .... >
+julia script here > outputs incorrect datasets with a specific ID ${suf}.nber
 
 
 ## z) display time

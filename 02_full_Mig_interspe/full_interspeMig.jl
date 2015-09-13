@@ -24,7 +24,7 @@ using SimGenerator
 	# get some values from the command line
 		# here the random seed
 	srand(int(ARGS[3]))
-	# suffix of th egenerated files
+	# suffix of the output files
 	suf = "fullModel_interMig"
 
 	# total number of simulations performed by ms
