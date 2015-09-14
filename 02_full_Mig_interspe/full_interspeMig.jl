@@ -31,7 +31,7 @@ using SimGenerator
 	# total number of simulations performed by ms
 	@par n_simulations 	n_repl * n_loci
 	# add constraints on number of segsites per RAD tag (msnseg parameter -S, -M and -Z, respectively)
-	@par snps 			[1, 4, 15]
+	@par snps 			["S" => 1, "M" => 4, "Z" => 15]
 	# For more than one population sample sizes are given as a list.
 	@par n_samples		[5, 5, 5, 5]	# 5 chromosomes per population
 	@par theta			theta0
