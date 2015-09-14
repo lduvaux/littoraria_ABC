@@ -25,13 +25,13 @@ using SimGenerator
 		# here the random seed
 	srand(int(ARGS[3]))
 	# suffix of the output files
-	suf = "test"
-#	suf = ARGS[4]
+#	suf = "test"
+	suf = ARGS[4]
 
 	# total number of simulations performed by ms
 	@par n_simulations 	n_repl * n_loci
 	# add constraints on number of segsites per RAD tag (msnseg parameter -S, -M and -Z, respectively)
-	@par snps 			["S" => 1, "M" => 4, "Z" => 15]
+	@par snps 			["S" => int(ARGS[5]), "M" => int(ARGS[6]), "Z" => int(ARGS[7])]
 	# For more than one population sample sizes are given as a list.
 	@par n_samples		[5, 5, 5, 5]	# 5 chromosomes per population
 	@par theta			theta0
@@ -122,8 +122,8 @@ end
 
 # Run, this time print priors as well as the spinput file (for the summary stats). [REQUIRED].
 @set run begin
-	@ms_out			"ms-out" * suf * ".txt"
-#	@ms_out			ARGS[5]
+#	@ms_out			"ms-out_" * suf * ".txt"
+	@ms_out			ARGS[8]
 	@priors_out		"priors_" * suf * ".txt"
 	@spinput_out	"spinput_" * suf * ".txt"
 	@command		"msnseg"
