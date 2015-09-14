@@ -45,19 +45,24 @@ echo "# taskid:"
 echo $taskid
 
 ## 1) set simulation variables
+printf "\n## 1) set simulation variables"
 nrep=100    # number of datasets to be simulated
 nloc=60000    # number of loci to simulate per dataset
 
 
 ## 2) run simulations
-printf "\n## 1) run simulations"
+printf "\n## 2) run simulations"
+    # 2.1) set file names
 rand_seed=${taskid}${jobid}
 echo "random seed:"
 printf "${rand_seed}"
 
 suf=full_interspeMig.${jobid}.${taskid}
+ms_out=ms-ali_${suf}.txt
+
+    # 2.2) run simulations
 printf "\n./runSim.sh full_interspeMig.jl ${rand_seed} ${suf}"
-./runSim.sh full_interspeMig.jl ${nrep} ${nloc} ${rand_seed} ${suf}
+./runSim.sh full_interspeMig.jl ${nrep} ${nloc} ${rand_seed} ${suf} ${ms_out}
 
 
 ## 3) compute sats
@@ -66,7 +71,8 @@ msums -i spinput_${suf}.txt -S all -o ABCstat_${suf}.txt
 
 
 ## 4) check number of incorrect datasets
-grep .... >
+printf "\n## 4) check number of incorrect datasets"
+grep "segsites" ${ms_out} > N_segsites_${suf}.txt
 julia script here > outputs incorrect datasets with a specific ID ${suf}.nber
 
 

@@ -25,7 +25,8 @@ using SimGenerator
 		# here the random seed
 	srand(int(ARGS[3]))
 	# suffix of the output files
-	suf = "fullModel_interMig"
+	suf = "test"
+#	suf = ARGS[4]
 
 	# total number of simulations performed by ms
 	@par n_simulations 	n_repl * n_loci
@@ -39,8 +40,7 @@ using SimGenerator
 	@par N				[TBS, TBS, TBS, TBS]
 	# migration: only M12, M21, M23, M32, M34 and M43 are relevant here.
 	@par mig			[ [NaN TBS 0 0]; [TBS NaN TBS 0]; [0 TBS NaN TBS]; [0 0 TBS NaN] ]
-	@par history		[ 	[:time => TBS, :type => :mig, :rates => [2, 3, 0]],
-							[:time => TBS, :type => :mig, :rates => [3, 2, 0]],
+	@par history		[ 	[:time => TBS, :type => :mig, :rates => ["m23" => [2, 3, 0], "m32" => [3, 2, 0]]	],
 							[:time => TBS, :type => :join, :pops => [2, 1]],
 							[:time => TBS, :type => :num, :sizes => [1 => TBS]],
 				     		[:time => TBS, :type => :join, :pops => [4, 3]],
@@ -122,7 +122,8 @@ end
 
 # Run, this time print priors as well as the spinput file (for the summary stats). [REQUIRED].
 @set run begin
-	@ms_out			"ms-ali_" * suf * ".txt"
+	@ms_out			"ms-out" * suf * ".txt"
+#	@ms_out			ARGS[5]
 	@priors_out		"priors_" * suf * ".txt"
 	@spinput_out	"spinput_" * suf * ".txt"
 	@command		"msnseg"
