@@ -1,3 +1,4 @@
+#!/usr/local/extras/Genomics/bin/julia
 using GZip
 
 function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1)
@@ -7,7 +8,7 @@ function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1)
 #	println(maxx)
 #	println(thres)
 
-	f = open(inp, "r")
+	f = GZip.gzopen(inp, "r")
 	res = GZip.gzopen(out, "w")
 
 	i = 1	# locus number
@@ -36,7 +37,7 @@ function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1)
 		end
 		i += 1
 	end
-	close(f)
+	GZip.close(f)
 	GZip.close(res)
 end
 

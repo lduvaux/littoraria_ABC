@@ -22,14 +22,14 @@
 # number of CPUs to use
 # -pe openmp 6
 # Submits an array of 80 identical tasks being only differentiated by an index number
-#$ -t 1-80
+#$ -t 1-10
 
 # set the environment variable TIMECOUNTER to 0, then start the chrono
 export TIMECOUNTER=0
 source timeused
 
 ## 0) Print miscellaneous variables for the log file
-echo "## 0) Print mis variables for the log file"
+echo "## 0) Print miscellaneous variables for the log file"
 #logname=${SGE_O_LOGNAME}
 jobid=${JOB_ID}
 taskid=${SGE_TASK_ID}
@@ -45,18 +45,18 @@ echo "# taskid:"
 echo $taskid
 
 ## 1) set simulation variables
-printf "\n## 1) set simulation variables"
-nrep=100    # number of datasets to be simulated
-nloc=60000    # number of loci to simulate per dataset
+printf "\n## 1) set simulation variables\n"
+nrep=50    # number of datasets to be simulated
+nloc=10    # number of loci to simulate per dataset
 mini=1  # minimum number of SNPs (S) to be observed in simulated alignments
 maxi=4  # maximum number of SNPs (S) to be observed in simulated alignments
 N_ite=15 # max number of ms iterations in order to observe the right number of SNP for a given alignment
-thres=600 # maximum number of simuls with S < mini or maxi > 4 (1%)
+thres=50 # maximum number of simuls with S < mini or maxi > 4 (1%)
 suthr=1Pc   # suffix for output, 1Pc -> 6e2/6e4
 
 
 ## 2) run simulations
-printf "\n## 2) run simulations"
+printf "\n## 2) run simulations\n"
     # 2.1) set file names
 rand_seed=${taskid}${jobid}
 echo "random seed:"
@@ -70,15 +70,20 @@ printf "\n./runSim.sh full_interspeMig.jl ${rand_seed} ${suf}"
 ./runSim.sh full_interspeMig.jl ${nrep} ${nloc} ${rand_seed} ${suf} ${mini} ${maxi} ${N_ite} ${ms_out}
 
 
-## 3) compute sats
-printf "\n## 3) compute sats"
+## 3) compute stats
+printf "\n## 3) compute stats\n"
 msums -i spinput_${suf}.txt -S all -o ABCstat_${suf}.txt
+gzip spinput_${suf}.txt
+gzip ABCstat_${suf}.txt
 
 
 ## 4) check number of incorrect datasets
-printf "\n## 4) check number of incorrect datasets"
+printf "\n## 4) check number of incorrect datasets\n"
 grep "segsites" ${ms_out} > N_segsites_${suf}.txt
-N_segsites_locus.jl N_segsites_${suf}.txt Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} 
+gzip N_segsites_${suf}.txt
+rm ${ms_out}
+printf "N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi}\n"
+N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} 
 
 
 ## z) display time
