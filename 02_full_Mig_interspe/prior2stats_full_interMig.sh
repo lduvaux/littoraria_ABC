@@ -22,7 +22,7 @@
 # number of CPUs to use
 # -pe openmp 6
 # Submits an array of 80 identical tasks being only differentiated by an index number
-#$ -t 1-10
+#$ -t 1-5
 
 # set the environment variable TIMECOUNTER to 0, then start the chrono
 export TIMECOUNTER=0
@@ -46,12 +46,12 @@ echo $taskid
 
 ## 1) set simulation variables
 printf "\n## 1) set simulation variables\n"
-nrep=50    # number of datasets to be simulated
-nloc=10    # number of loci to simulate per dataset
+nrep=500    # number of datasets to be simulated
+nloc=1000    # number of loci to simulate per dataset
 mini=1  # minimum number of SNPs (S) to be observed in simulated alignments
 maxi=4  # maximum number of SNPs (S) to be observed in simulated alignments
 N_ite=15 # max number of ms iterations in order to observe the right number of SNP for a given alignment
-thres=50 # maximum number of simuls with S < mini or maxi > 4 (1%)
+thres=1 # maximum number of simuls with S < mini or maxi > 4 (1%)
 suthr=1Pc   # suffix for output, 1Pc -> 6e2/6e4
 
 

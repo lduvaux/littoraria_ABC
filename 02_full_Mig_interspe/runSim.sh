@@ -1,1 +1,4 @@
-/home/ludovic/Documents/01_professional/06_Projects_experiments/2010-2012_Shef_NERC1/01_Shef_NERC1_capture/04_ABC_demography_selection/01_Main_project/src/0.2_git_repos/simgenerator.git/examples/MS/runSim.sh
+export JULIA_LOAD_PATH=$JULIA_LOAD_PATH:~/bin   # simgenerator modules path (MSSimulation.jl  SimGenerator.jl  SimUtils.jl)
+export PATH=$PATH:../../binaries    # executable path (msnsam, msums, fastsimcoal)
+
+julia "$@"  # call julia

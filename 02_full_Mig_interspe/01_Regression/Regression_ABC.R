@@ -14,7 +14,7 @@ if (READ_BADF){
     ite <- 1
     data_nb <- 0
     for (fil in f_bads){
-        print(fil)
+        print (fil)
         tab <- read.table(fil, header=T, sep="\t", stringsAsFactors = F)
         if (nrow(tab)==0) {
             data_nb <- data_nb + N_REP
@@ -41,13 +41,13 @@ if (READ_BADF){
 
 print("    # I.2) load priors")
 if (READ_PRIORF) {
-    print(fil)
     f_prior <- dir(pattern = PREF_PRIOR, path = PATH_PRIOR, full.names = T)
     if (TEST_ABC)  f_prior <- f_prior[1:N_TASKS]
     prior <- matrix(ncol = length(PRIORS), nrow = N_DATA)
 
     ite <- 1
     for (fil in f_prior){
+        print (fil)
         tab <- read.table(fil, header=T, sep=" ", stringsAsFactors = F)
         tab <- as.matrix(tab[,-ncol(tab)])[,PRIORS]
         if (ite==1) colnames(prior) <- colnames(tab)
@@ -64,13 +64,13 @@ if (READ_PRIORF) {
 
 print("    # I.3) load simulated stats")
 if (READ_STATF) {
-    print(fil)
     f_stat <- dir(pattern = PREF_STAT, path = PATH_STAT, full.names = T)
     if (TEST_ABC)  f_stat <- f_stat[1:N_TASKS]
     stat <- matrix(ncol = length(STATS), nrow = N_DATA)
 
     ite <- 1
     for (fil in f_stat){
+        print (fil)
         tab <- read.table(fil, header=T, sep="\t", strip.white = T, stringsAsFactors = F)
         tab <- as.matrix(tab[,STATS])
         if (ite==1) colnames(stat) <- colnames(tab)

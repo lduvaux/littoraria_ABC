@@ -4,3 +4,6 @@
 *~*
 seedms
 *.pdf
+*.sh.o*
+*.Rdata
+*.log
