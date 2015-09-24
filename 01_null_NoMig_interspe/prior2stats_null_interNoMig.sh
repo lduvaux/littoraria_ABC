@@ -14,7 +14,7 @@
 # run time for job in hours:mins:sec (max 168:0:0, jobs with h_rt < 8:0:0 have priority)
 # $ -l h_rt=7:59:59
 # submit an array of t identical tasks being only differentiated by an index number
-#$ -t 1-5
+#$ -t 1-60
 
 # set the environment variable TIMECOUNTER to 0, then start the chrono
 export TIMECOUNTER=0
@@ -38,6 +38,7 @@ echo $taskid
 
 ## 1) set simulation variables
 printf "\n## 1) set simulation variables\n"
+model=null_interspeNoMig
 nrep=1750	# number of datasets to be simulated
 nloc=29623	# number of loci to simulate per dataset
 mini=1		# minimum number of SNPs (S) to be observed in simulated alignments
@@ -53,12 +54,12 @@ rand_seed=${taskid}${jobid}
 echo "random seed:"
 printf "${rand_seed}"
 
-suf=null_interspeNoMig.${jobid}.${taskid}
+suf=${model}.${jobid}.${taskid}
 ms_out=ms-ali_${suf}.txt
 
     # 2.2) run simulations
-printf "\n./runSim.sh null_interspeNoMig.jl ${rand_seed} ${suf}"
-./runSim.sh null_interspeNoMig.jl ${nrep} ${nloc} ${rand_seed} ${suf} ${mini} ${maxi} ${N_ite} ${ms_out}
+printf "\n./runSim.sh ${model}.jl ${rand_seed} ${suf}"
+./runSim.sh ${model}.jl ${nrep} ${nloc} ${rand_seed} ${suf} ${mini} ${maxi} ${N_ite} ${ms_out}
 
 ## 3) compute stats
 printf "\n## 3) compute stats\n"
