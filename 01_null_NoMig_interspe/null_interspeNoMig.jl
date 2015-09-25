@@ -1,12 +1,11 @@
 using Distributions
 using SimGenerator
 
-# Model without inter-species migration
+# Model without inter-species migration.
 # Loci share demographic parameters (Ni, Ts, Mi) and mutation rates but differ
-# with respect to sample sizes [Do they really differ? I thought all loci had
-# 20 chromosomes]. Furthermore we essentially want to treat a set of loci as
-# one data point, therefore theta and rho become nuisance parameters while
-# migration rates are our priors for the ABC analysis.
+# with respect to sample sizes. Furthermore we essentially want to treat a set
+# of loci as one data point, therefore theta and rho become nuisance parameters
+# while migration rates are our priors for the ABC analysis.
 
 # Setup the simulation. [REQUIRED].
 @setup MSSimulation begin
@@ -64,10 +63,10 @@ end
 	@par mig			[M12, M21, M34, M43]
 
 	# uniform priors on historical events (in years):
-	T2 = rand() * (1e6 - 1e3) + 1e3	# [1e3 - 1e6] years
-	T3 = rand() * (1e6 - 1e3) + 1e3	# [1e3 - 1e6] years
-	maxT = max(T2, T3) # take care that T4 always > T3 and T2 as ms won't raise any warning!
-	low_bd = max(maxT, 5e5)	# take care that the maxi has to be > 5e5 (lower bound of the prior)
+	T2 = rand() * (1e6 - 1e3) + 1e3			# [1e3 - 1e6] years
+	T3 = rand() * (1e6 - 1e3) + 1e3			# [1e3 - 1e6] years
+	maxT = max(T2, T3)						# take care that T4 always > T3 and T2 as ms won't raise any warning!
+	low_bd = max(maxT, 5e5)					# take care that the maxi has to be > 5e5 (lower bound of the prior)
 	T4 = rand() * (5e6 - low_bd) + low_bd	# [5e5 - 5e6], T4 > max(T2, T3)
 		# convert times in unit of 4N0 generations! (1 generation a year)
 	T2 = T2 / (4 * n0)
@@ -90,7 +89,6 @@ end
 	@par theta			theta0
 end
 
-
 # Declare which variables are to be printed out as priors (for ABC analysis).
 # Theta and rho are nuisance parameters, the ones we are interested in are 
 # (Ni, Ts, Mi). Since we will compute summary statistics over an entire
@@ -110,7 +108,6 @@ end
 # Declare which level should be considered as a single sample in terms
 # of summary stats (used for spinput generation). [REQUIRED].
 @set sample dataset
-
 
 # Run, this time print priors as well as the spinput file (for the summary stats). [REQUIRED].
 @set run begin
