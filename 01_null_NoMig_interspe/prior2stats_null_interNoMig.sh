@@ -11,6 +11,8 @@
 # request memory for job
 #$ -l mem=6G
 #$ -l rmem=6G
+# specify the architecture of the node in which the job should run, so to avoid using the incompatible node
+#$ -l arch=intel*
 # run time for job in hours:mins:sec (max 168:0:0, jobs with h_rt < 8:0:0 have priority)
 # $ -l h_rt=7:59:59
 # submit an array of t identical tasks being only differentiated by an index number
@@ -42,9 +44,9 @@ model=null_interspeNoMig
 nrep=1750	# number of datasets to be simulated
 nloc=29623	# number of loci to simulate per dataset
 mini=1		# minimum number of SNPs (S) to be observed in simulated alignments
-maxi=4		# maximum number of SNPs (S) to be observed in simulated alignments
-N_ite=20	# max number of ms iterations in order to observe the right number of SNP for a given alignment
-thres=296	# maximum number of simuls with S < mini or maxi > 4 (1%)
+maxi=4		# maximum number of SNPs (M) to be observed in simulated alignments
+N_ite=20	# maximum number of msnseg iterations in order to observe the right number of SNP for a given alignment
+thres=296	# maximum number of simulations with S < mini or maxi > M (1%)
 suthr=1Pc	# suffix for output, 1Pc -> 6e2/6e4
 
 ## 2) run simulations
