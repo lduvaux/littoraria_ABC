@@ -2,7 +2,7 @@ TEST_ABC <- T
 N_TASKS <- 60
 N_REP <- 1750
 N_DATA <- N_TASKS * N_REP
-MODEL <- "full_interspeMig"
+MODEL <- "null_interspeNoMig"
 
 # bad simuls
 READ_BADF <- T  # do I load bad simulation text file? if not I load the Rdata bad simulation file
