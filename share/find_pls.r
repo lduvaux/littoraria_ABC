@@ -4,6 +4,7 @@ directory <- "./"
 filename <- "fullModel_Mig_Interspe"
 load("priors_full_interspeMig.Rdata")
 load("ABCstat_full_interspeMig.Rdata")
+# WARNING: in the original script, it read 10,000 sets of stats and params
 numComp <- ncol(stat)
 
 
@@ -52,8 +53,9 @@ myPlsrDataFrame <- data.frame(comp1=myPlsr$loadings[,1])
 for(i in 2:numComp){
     myPlsrDataFrame <- cbind(myPlsrDataFrame, myPlsr$loadings[,i])
 }
+pls_tab <- cbind(colnames(stats), myMax, myMin, lambda, myGM, myBCMeans, myBCSDs, myPlsrDataFrame)
 write.table(
-    cbind(colnames(stats), myMax, myMin, lambda, myGM, myBCMeans, myBCSDs, myPlsrDataFrame),
+    pls_tab,
     file=paste(directory, "Routput_", filename, ".txt", sep=""),
     col.names=F, row.names=F, sep="\t", quote=F
 )
