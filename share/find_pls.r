@@ -1,7 +1,10 @@
 rm(list=ls())
-# load data
+# variables and load data
+directory <- "./"
+filename <- "fullModel_Mig_Interspe"
 load("priors_full_interspeMig.Rdata")
 load("ABCstat_full_interspeMig.Rdata")
+numComp <- ncol(stat)
 
 
 # standardize the params
@@ -19,39 +22,41 @@ for(i in 1:ncol(stats)){
 	stats[,i] <- 1 + (stats[,i]-myMin[i]) / (myMax[i] - myMin[i]);
 }
 
-
-
-
-
-#transform statistics via boxcox  
-library("MASS");	
-for(i in 1:length(stats)){		
-	d <- cbind(stats[,i], params);
-	mylm <- lm(as.formula(d), data=d)			
-	myboxcox <- boxcox(mylm, lambda=seq(-50, 80, 1/10), plotit=T, interp=T, eps=1/50);	
-	lambda <- c(lambda, myboxcox$x[myboxcox$y==max(myboxcox$y)]);			
-	print(paste(names(stats)[i], myboxcox$x[myboxcox$y==max(myboxcox$y)]));
-	myGM <- c(myGM, exp(mean(log(stats[,i]))));			
+# transform statistics via boxcox  
+library("MASS")
+for(i in 1:ncol(stats)){
+	d <- as.data.frame(cbind(stats[,i], params))
+	mylm <- lm(as.formula(d), data=d)
+	myboxcox <- boxcox(mylm, lambda=seq(-50, 80, 1/10), plotit=T, interp=T, eps=1/50)
+	lambda <- c(lambda, myboxcox$x[myboxcox$y==max(myboxcox$y)])
+	print(paste(names(stats)[i], myboxcox$x[myboxcox$y==max(myboxcox$y)]))
+	myGM <- c(myGM, exp(mean(log(stats[,i]))))
 }
 
-#standardize the BC-stats
+# standardize the BC-stats
 myBCMeans <- c(); myBCSDs <- c();
-for(i in 1:length(stats)){
-	stats[,i] <- (stats[,i]^lambda[i] - 1)/(lambda[i]*myGM[i]^(lambda[i]-1));	
-	myBCSDs <- c(myBCSDs, sd(stats[,i]));
-	myBCMeans <- c(myBCMeans, mean(stats[,i]));		
-	stats[,i] <- (stats[,i]-myBCMeans[i])/myBCSDs[i];
+for(i in 1:ncol(stats)){
+	stats[,i] <- (stats[,i]^lambda[i] - 1)/(lambda[i]*myGM[i]^(lambda[i]-1))
+	myBCSDs <- c(myBCSDs, sd(stats[,i]))
+	myBCMeans <- c(myBCMeans, mean(stats[,i]))
+	stats[,i] <- (stats[,i]-myBCMeans[i])/myBCSDs[i]
 }
 
-#perform pls
-library("pls");
+# perform pls
+library("pls")
 #myPlsr <- plsr(as.matrix(params) ~ as.matrix(stats), scale=F, ncomp=numComp, validation="LOO");
-myPlsr <- plsr(as.matrix(params) ~ as.matrix(stats), scale=F, ncomp=numComp);
+myPlsr <- plsr(as.matrix(params) ~ as.matrix(stats), scale=F, ncomp=numComp)
 
-#write pls to a file
-myPlsrDataFrame <- data.frame(comp1=myPlsr$loadings[,1]);
-for(i in 2:numComp) { myPlsrDataFrame <- cbind(myPlsrDataFrame, myPlsr$loadings[,i]); } 
-write.table(cbind(names(stats), myMax, myMin, lambda, myGM, myBCMeans, myBCSDs, myPlsrDataFrame), file=paste(directory, "Routput_", filename, sep=""), col.names=F, row.names=F, sep="\t", quote=F);
+# write pls to a file
+myPlsrDataFrame <- data.frame(comp1=myPlsr$loadings[,1])
+for(i in 2:numComp){
+    myPlsrDataFrame <- cbind(myPlsrDataFrame, myPlsr$loadings[,i])
+}
+write.table(
+    cbind(colnames(stats), myMax, myMin, lambda, myGM, myBCMeans, myBCSDs, myPlsrDataFrame),
+    file=paste(directory, "Routput_", filename, sep=""),
+    col.names=F, row.names=F, sep="\t", quote=F
+)
 
 #make RMSE plot
 pdf(paste(directory, "RMSE_", filename, ".pdf", sep=""));
