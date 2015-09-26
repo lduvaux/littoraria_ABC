@@ -85,12 +85,13 @@ if (READ_STATF) {
     load(RDATA_STAT)
 }
 
-print("    # I.4) load observed stats")
+
+print("### II) ABC analysis")
+print("    # II.1) load observed stats")
 print("         # Do not mind the warning message about the file incomplete final line")
 obs_stat <- unlist(read.table(F_OBS, header=T, sep="\t", strip.white = T, stringsAsFactors = F)[,STATS])
 
-
-print("### II) perform abc")
+print("    # II.1) perform ABC")
 if (!LOAD_REG)
 {
     print("    # Compute regression")
