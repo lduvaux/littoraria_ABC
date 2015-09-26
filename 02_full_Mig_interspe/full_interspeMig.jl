@@ -1,20 +1,23 @@
 using Distributions
 using SimGenerator
 
-# Model with inter-species migration.
+
+# Model with inter-species migration. 
 # Loci share demographic parameters (Ni, Ts, Mi) and mutation rates but differ
 # with respect to sample sizes. Furthermore we essentially want to treat a set
 # of loci as one data point, therefore theta and rho become nuisance parameters
 # while migration rates are our priors for the ABC analysis.
 
+
 # Setup the simulation. [REQUIRED].
 @setup MSSimulation begin
 
-#	set some global variables (accessible throughout the entire file)
-	n0 = 1e4				# size of reference population: 10,000
-	mu = 3e-9				# mutation rate
-	n_sites = 82			# tag length
-	n_repl = int(ARGS[1])	# number of datasets (i.e. dataset simulations)
+#	some global variable (accessible throughout the entire file).
+	n0 = 1e4	# size of reference population: 10,000
+	mu = 3e-9	# mutation rate
+	# r = 0		# recombination rate, not needed here
+	n_sites = 82	# tag length
+	n_repl = int(ARGS[1])	# number of datasets (i.e. dataset simulations).
 	n_loci = int(ARGS[2])	# number of loci per dataset
 	theta0 = 4 * n0 * mu * n_sites
 
@@ -22,6 +25,7 @@ using SimGenerator
 		# here the random seed
 	srand(int(ARGS[3]))
 	# suffix of the output files
+#	suf = "test"
 	suf = ARGS[4]
 
 	# total number of simulations performed by ms
@@ -65,12 +69,12 @@ end
 	M43 = M12			#
 	@par mig			[M12, M21, M23, M32, M34, M43]
 	
-	# uniform priors on historical events (in years):
-	T1 = rand() * (50e3 - 1e3) + 1e3		# [1e3 - 5e4] years
-	T2 = rand() * (1e6 - T1) + T1			# [1e3 - 1e6] years, T2 > T1
-	T3 = rand() * (1e6 - T1) + T1			# [1e3 - 1e6] years, T3 > T1
-	maxT = max(T2, T3)						# take care that T4 always > T3 and T2 as ms won't raise any warning!
-	low_bd = max(maxT, 5e5)					# take care that the maxi has to be > 5e5 (lower bound of the prior)
+	# uniform priors on historical events (in years): with T3 > T1 & T3 > T2
+	T1 = rand() * (50e3 - 1e3) + 1e3	# [1e3 - 5e4] years
+	T2 = rand() * (1e6 - T1) + T1	# [1e3 - 1e6] years, T2 > T1
+	T3 = rand() * (1e6 - T1) + T1	# [1e3 - 1e6] years, T3 > T1
+	maxT = max(T2, T3) # take care that T4 always > T3 and T2 as ms won't raise any warning!
+	low_bd = max(maxT, 5e5)	# take care that the maxi has to be > 5e5 (lower bound of the prior)
 	T4 = rand() * (5e6 - low_bd) + low_bd	# [5e5 - 5e6], T4 > max(T2, T3)
 		# convert times in unit of 4N0 generations! (1 generation a year)
 	T1 = T1 / (4 * n0)
@@ -94,6 +98,7 @@ end
 	@par theta			theta0
 end
 
+
 # Declare which variables are to be printed out as priors (for ABC analysis).
 # Theta and rho are nuisance parameters, the ones we are interested in are 
 # (Ni, Ts, Mi). Since we will compute summary statistics over an entire
@@ -114,6 +119,7 @@ end
 # of summary stats (used for spinput generation). [REQUIRED].
 @set sample dataset
 
+
 # Run, this time print priors as well as the spinput file (for the summary stats). [REQUIRED].
 @set run begin
 #	@ms_out			"ms-out_" * suf * ".txt"
@@ -122,3 +128,6 @@ end
 	@spinput_out	"spinput_" * suf * ".txt"
 	@command		"msnseg"
 end
+
+
+

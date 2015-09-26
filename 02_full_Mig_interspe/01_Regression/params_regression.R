@@ -1,6 +1,6 @@
 TEST_ABC <- T
 N_TASKS <- 5
-N_REP <- 1750
+N_REP <- 500
 N_DATA <- N_TASKS * N_REP
 MODEL <- "full_interspeMig"
 

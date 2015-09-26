@@ -54,7 +54,7 @@ for(i in 2:numComp){
 }
 write.table(
     cbind(colnames(stats), myMax, myMin, lambda, myGM, myBCMeans, myBCSDs, myPlsrDataFrame),
-    file=paste(directory, "Routput_", filename, sep=""),
+    file=paste(directory, "Routput_", filename, ".txt", sep=""),
     col.names=F, row.names=F, sep="\t", quote=F
 )
 
