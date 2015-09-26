@@ -4,13 +4,13 @@ load("priors_full_interspeMig.Rdata")
 load("ABCstat_full_interspeMig.Rdata")
 
 
-#standardize the params
+# standardize the params
 params <- prior
 for(i in 1:ncol(params)){
     params[,i] <- (params[,i] - mean(params[,i])) / sd(params[,i])
 }
 
-#force stats in [1,2]
+# force stats in [1,2]
 stats <- stat
 myMax <- c(); myMin <- c(); lambda <- c(); myGM <- c();
 for(i in 1:ncol(stats)){
