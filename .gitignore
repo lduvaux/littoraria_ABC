@@ -9,3 +9,4 @@ seedms
 *.log
 .DS_Store
 .Rapp.history
+!ABCstat_observed.txt
