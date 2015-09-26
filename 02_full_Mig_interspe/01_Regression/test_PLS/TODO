@@ -1,0 +1,10 @@
+- think to transform the observed data as well!
+- three steps in the ABC:
+    - simulations
+    - compute PLS
+    - ABC
+        - including the transfor of teh stats using the PLS
+
+Need to:
+    - optimize transformation using 'transformer'
+        - require a script to format stat file to 'transformer' input in the fly
