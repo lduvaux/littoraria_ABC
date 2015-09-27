@@ -44,11 +44,11 @@ echo $taskid
 model=full_interspeMig
 printf "\n## 1) set simulation variables\n"
 nrep=500    # number of datasets to be simulated
-nloc=1000    # number of loci to simulate per dataset
+nloc=100    # number of loci to simulate per dataset
 mini=1  # minimum number of SNPs (S) to be observed in simulated alignments
 maxi=4  # maximum number of SNPs (S) to be observed in simulated alignments
 N_ite=15 # max number of ms iterations in order to observe the right number of SNP for a given alignment
-thres=1 # maximum number of simuls with S < mini or maxi > 4 (1%)
+thres=1 # maximum number of simuls with S < mini or maxi > 4
 suthr=1Pc   # suffix for output, 1Pc -> 6e2/6e4
 
 ## 2) run simulations
@@ -72,6 +72,7 @@ msums -i spinput_${suf}.txt -S all -o ABCstat_${suf}.txt
 gzip spinput_${suf}.txt
     # remove column 'dataset' and compress
 cut -f2- ABCstat_${suf}.txt | gzip > ABCstat_${suf}.txt.gz
+rm ABCstat_${suf}.txt
 
 
 ## 4) check number of incorrect datasets
@@ -79,7 +80,7 @@ printf "\n## 4) check number of incorrect datasets\n"
 grep "segsites" ${ms_out} > N_segsites_${suf}.txt
 gzip N_segsites_${suf}.txt
 rm ${ms_out}
-printf "N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi}\n"
+printf "N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} ${jobid} ${taskid}\n"
 N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} ${jobid} ${taskid}
 
 
