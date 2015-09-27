@@ -1,32 +1,27 @@
 #!/bin/bash
-# run platypus for target contigs
 
-## set up bash and envt options
-# Specifies the interpreting shell for the job.
+# specify the interpreting shell for the job
 #$ -S /bin/bash
 # merge mean and error ouputs
 #$ -j y
-# Execute the job from the current working directory.
+# execute the job from the current working directory
 #$ -cwd
-# Specifies that all environment variables active within the qsub utility be exported to the context of the job
+# specifiy that all environment variables active within the qsub utility be exported to the context of the job
 #$ -V
-
-## Job settings
-# request memory for job (default 6G, max 72G)
+# request memory for job
 #$ -l mem=6G
 #$ -l rmem=6G
-
+# specify the architecture of the node in which the job should run, so to avoid using the incompatible node
+#$ -l arch=intel*
 # run time for job in hours:mins:sec (max 168:0:0, jobs with h_rt < 8:0:0 have priority)
 # $ -l h_rt=7:59:59
-
-# number of CPUs to use
-# -pe openmp 6
-# Submits an array of 80 identical tasks being only differentiated by an index number
+# submit an array of t identical tasks being only differentiated by an index number
 #$ -t 1-5
 
 # set the environment variable TIMECOUNTER to 0, then start the chrono
 export TIMECOUNTER=0
 source timeused
+
 
 ## 0) Print miscellaneous variables for the log file
 echo "## 0) Print miscellaneous variables for the log file"
@@ -44,7 +39,9 @@ echo $jobid
 echo "# taskid:"
 echo $taskid
 
+
 ## 1) set simulation variables
+model=full_interspeMig
 printf "\n## 1) set simulation variables\n"
 nrep=500    # number of datasets to be simulated
 nloc=1000    # number of loci to simulate per dataset
@@ -54,7 +51,6 @@ N_ite=15 # max number of ms iterations in order to observe the right number of S
 thres=1 # maximum number of simuls with S < mini or maxi > 4 (1%)
 suthr=1Pc   # suffix for output, 1Pc -> 6e2/6e4
 
-
 ## 2) run simulations
 printf "\n## 2) run simulations\n"
     # 2.1) set file names
@@ -62,12 +58,12 @@ rand_seed=${taskid}${jobid}
 echo "random seed:"
 printf "${rand_seed}"
 
-suf=full_interspeMig.${jobid}.${taskid}
+suf=${model}.${jobid}.${taskid}
 ms_out=ms-ali_${suf}.txt
 
     # 2.2) run simulations
-printf "\n./runSim.sh full_interspeMig.jl ${rand_seed} ${suf}"
-./runSim.sh full_interspeMig.jl ${nrep} ${nloc} ${rand_seed} ${suf} ${mini} ${maxi} ${N_ite} ${ms_out}
+printf "\n./runSim.sh ${model}.jl ${rand_seed} ${suf}"
+./runSim.sh ${model}.jl ${nrep} ${nloc} ${rand_seed} ${suf} ${mini} ${maxi} ${N_ite} ${ms_out}
 
 
 ## 3) compute stats
