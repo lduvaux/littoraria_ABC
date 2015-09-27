@@ -70,7 +70,8 @@ printf "\n./runSim.sh ${model}.jl ${rand_seed} ${suf}"
 printf "\n## 3) compute stats\n"
 msums -i spinput_${suf}.txt -S all -o ABCstat_${suf}.txt
 gzip spinput_${suf}.txt
-gzip ABCstat_${suf}.txt
+    # remove column 'dataset' and compress
+cut -f2- ABCstat_${suf}.txt | gzip > ABCstat_${suf}.txt.gz
 
 
 ## 4) check number of incorrect datasets
