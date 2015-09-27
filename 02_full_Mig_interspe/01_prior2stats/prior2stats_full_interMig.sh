@@ -80,7 +80,7 @@ grep "segsites" ${ms_out} > N_segsites_${suf}.txt
 gzip N_segsites_${suf}.txt
 rm ${ms_out}
 printf "N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi}\n"
-N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} 
+N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} ${jobid} ${taskid}
 
 
 ## z) display time

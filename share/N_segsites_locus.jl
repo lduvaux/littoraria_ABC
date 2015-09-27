@@ -1,7 +1,7 @@
 #!/usr/local/extras/Genomics/bin/julia
 using GZip
 
-function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1)
+function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1, jobID="", taskID="")
 
 #	println("parameter values (min, max and threshold):")
 #	println(minn)
@@ -10,6 +10,8 @@ function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1)
 
 	f = GZip.gzopen(inp, "r")
 	res = GZip.gzopen(out, "w")
+	jobID = (jobID == "") ? "" : "." * jobID
+	taskID = (taskID == "") ? "" : "." * taskID
 
 	i = 1	# locus number
 	bad = 0	# number of bad loci
@@ -28,7 +30,7 @@ function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1)
 		# when we reach the last locus of a dataset, test threshold
 		if (i == nloc)
 			if (bad >= thres)
-				GZip.write(res, "full_interspeMig.jobID.taskID." * string(simID), "\n")
+				GZip.write(res, "full_interspeMig$(jobID)$(taskID)." * string(simID), "\n")
 			end
 			# then re-initialize and increment
 			i = 0
@@ -48,5 +50,12 @@ thres = int(ARGS[3])
 nloc = int(ARGS[4])
 mini = int(ARGS[5])
 maxi = int(ARGS[6])
-run(inp, nloc=nloc, out=out, minn=mini, maxx=maxi, thres=thres)
+if (length(ARGS) > 6)
+	jobID = ARGS[7]
+	taskID = ARGS[8]
+else
+	jobID = ""
+	taskID = ""
+end
+run(inp, nloc=nloc, out=out, minn=mini, maxx=maxi, thres=thres, jobID=jobID, taskID=taskID)
 
