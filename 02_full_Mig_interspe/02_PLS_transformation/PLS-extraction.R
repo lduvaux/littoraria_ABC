@@ -1,20 +1,48 @@
 rm(list=ls())
-# variables and load data
-directory <- "./"
-filename <- "fullModel_Mig_Interspe"
-load("priors_full_interspeMig.Rdata")
-load("ABCstat_full_interspeMig.Rdata")
-# WARNING: in the original script, it read 10,000 sets of stats and params
-numComp <- ncol(stat)
+library("MASS")
+library("pls")
+source("./params.R")
+source("./functions.R")
+
+print("### I) load data")
+print("    # I.1) load bad simuls")
+if (READ_BADF){
+    lbads <- read_badf(pattern=PREF_BADS, path=PATH_BADS, n_files=N_FILES,
+        n_data=N_DATA, file=RDATA_BAD, n_rep=N_REP)
+    bads <- lbads$bads
+    test_bad <- lbads$test_bad
+    rm(lbads)
+} else {
+    load(RDATA_BAD)
+}
+
+print("    # I.2) load priors")
+if (READ_PRIORF) {
+    prior <- read_prior(pattern=PREF_PRIOR, path=PATH_PRIOR,
+        n_files=N_FILES, vpriors=PRIORS, n_data=N_DATA, file=RDATA_PRIOR)
+} else {
+    load(RDATA_PRIOR)
+}
+
+print("    # I.3) load simulated stats")
+if (READ_STATF) {
+    stat <- read_stat(pattern=PREF_STAT, path=PATH_STAT, n_files=N_FILES,
+        n_data=N_DATA, vstats=STATS, file=RDATA_STAT)
+} else {
+    load(RDATA_STAT)
+}
 
 
-# standardize the params
+print("### II) extract PLS")
+numComp <- NUMCOMP
+
+print("    # II.1) standardize the params")
 params <- prior
 for(i in 1:ncol(params)){
     params[,i] <- (params[,i] - mean(params[,i])) / sd(params[,i])
 }
 
-# force stats in [1,2]
+print("    # II.2) force stats in [1,2]")
 stats <- stat
 myMax <- c(); myMin <- c(); lambda <- c(); myGM <- c();
 for(i in 1:ncol(stats)){
@@ -23,8 +51,7 @@ for(i in 1:ncol(stats)){
 	stats[,i] <- 1 + (stats[,i]-myMin[i]) / (myMax[i] - myMin[i]);
 }
 
-# transform statistics via boxcox  
-library("MASS")
+print("    # II.3) transform statistics via boxcox")
 for(i in 1:ncol(stats)){
 	d <- as.data.frame(cbind(stats[,i], params))
 	mylm <- lm(as.formula(d), data=d)
@@ -33,8 +60,9 @@ for(i in 1:ncol(stats)){
 	print(paste(names(stats)[i], myboxcox$x[myboxcox$y==max(myboxcox$y)]))
 	myGM <- c(myGM, exp(mean(log(stats[,i]))))
 }
+dev.off()
 
-# standardize the BC-stats
+print("    # II.4) standardize the BC-stats")
 myBCMeans <- c(); myBCSDs <- c();
 for(i in 1:ncol(stats)){
 	stats[,i] <- (stats[,i]^lambda[i] - 1)/(lambda[i]*myGM[i]^(lambda[i]-1))
@@ -43,28 +71,25 @@ for(i in 1:ncol(stats)){
 	stats[,i] <- (stats[,i]-myBCMeans[i])/myBCSDs[i]
 }
 
-# perform pls
-library("pls")
+print("    # II.5) perform pls")
 #myPlsr <- plsr(as.matrix(params) ~ as.matrix(stats), scale=F, ncomp=numComp, validation="LOO");
 myPlsr <- plsr(as.matrix(params) ~ as.matrix(stats), scale=F, ncomp=numComp)
 
-# write pls to a file
+print("    # II.6) write pls to a file")
 myPlsrDataFrame <- data.frame(comp1=myPlsr$loadings[,1])
 for(i in 2:numComp){
     myPlsrDataFrame <- cbind(myPlsrDataFrame, myPlsr$loadings[,i])
 }
 pls_tab <- cbind(colnames(stats), myMax, myMin, lambda, myGM, myBCMeans, myBCSDs, myPlsrDataFrame)
-write.table(
-    pls_tab,
-    file=paste(directory, "Routput_", filename, ".txt", sep=""),
+write.table(pls_tab,
+    file=paste(DIROUT, "Routput_", MODEL, ".txt", sep=""),
     col.names=F, row.names=F, sep="\t", quote=F
 )
 
-#make RMSE plot
-pdf(paste(directory, "RMSE_", filename, ".pdf", sep=""));
+print("    # II.7) make RMSE plot")
+pdf(paste(DIROUT, "RMSE_", MODEL, ".pdf", sep=""));
 plot(RMSEP(myPlsr));
 dev.off();
-
 
 
 #obsa <- read.table("/mnt/uni/ABC/arvalis/arvalis_both.obs", header=T);

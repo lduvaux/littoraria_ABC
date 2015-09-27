@@ -32,7 +32,7 @@ date
 echo $host
 
 # script R
-fil=PLS_extraction.R
+fil=PLS-extraction
 R CMD BATCH ${fil}.R ${fil}.${jobid}.log
 
 # display time
