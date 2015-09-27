@@ -44,7 +44,7 @@ echo $taskid
 model=full_interspeMig
 printf "\n## 1) set simulation variables\n"
 nrep=500    # number of datasets to be simulated
-nloc=100    # number of loci to simulate per dataset
+nloc=1000    # number of loci to simulate per dataset
 mini=1  # minimum number of SNPs (S) to be observed in simulated alignments
 maxi=4  # maximum number of SNPs (S) to be observed in simulated alignments
 N_ite=15 # max number of ms iterations in order to observe the right number of SNP for a given alignment
