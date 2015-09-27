@@ -94,7 +94,7 @@ print("### II) perform abc")
 if (!LOAD_REG)
 {
     print("    # Compute regression")
-    if (TEST_ABC) NUMNET <- 3
+    if (TEST_ABC) # NUMNET <- 3
     logitbd <- LOGITBD(prior)
     print (paste("myres <- abc(target=obs_stat, param=prior, sumstat=stat, tol=", TOL, ", method='", METH, "', transf=VTRANSF, numnet=", NUMNET, ", sizenet=", SIZENET, ", trace=T, logit.bounds=logitbd)", sep=""))
     myres <- abc(target=obs_stat, param=prior, sumstat=stat, tol=TOL, method=METH, transf=VTRANSF, numnet=NUMNET, sizenet=SIZENET, trace=T, logit.bounds=logitbd)

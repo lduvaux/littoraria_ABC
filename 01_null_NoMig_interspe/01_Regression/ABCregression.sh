@@ -32,6 +32,9 @@ host=${HOSTNAME}
 date
 echo $host
 
+# load R
+module load apps/R
+
 # script R
 fil=Regression_ABC
 R CMD BATCH ${fil}.R ${fil}.${jobid}.log
