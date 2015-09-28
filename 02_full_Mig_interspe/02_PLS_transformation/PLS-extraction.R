@@ -77,11 +77,20 @@ print("    # II.5) perform pls")
 #myPlsr <- plsr(as.matrix(params) ~ as.matrix(stats), scale=F, ncomp=numComp, validation="LOO");
 myPlsr <- plsr(as.matrix(params) ~ as.matrix(stats), scale=F, ncomp=numComp)
 
+print("Variance explained by the first 10 components")
+print(sum(explvar(myPlsr)[1:10]))
+print("Variance explained by EACH the first 'numComp' components")
+print(explvar(myPlsr))
+print("Detail of the variance explained by the first 'numComp' components")
+print(summary(myPlsr))
+
+
 print("    # II.6) write pls to a file")
 myPlsrDataFrame <- data.frame(comp1=myPlsr$loadings[,1])
 for(i in 2:numComp){
     myPlsrDataFrame <- cbind(myPlsrDataFrame, myPlsr$loadings[,i])
 }
+
 pls_tab <- cbind(colnames(stats), myMax, myMin, lambda, myGM, myBCMeans, myBCSDs, myPlsrDataFrame)
 write.table(pls_tab,
     file=paste(DIROUT, "Routput_", MODEL, ".txt", sep=""),
