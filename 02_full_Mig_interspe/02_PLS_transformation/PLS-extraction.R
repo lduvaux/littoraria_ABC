@@ -81,7 +81,7 @@ print("Variance explained by the first 10 components")
 print(sum(explvar(myPlsr)[1:10]))
 print("Variance explained by EACH the first 'numComp' components")
 print(explvar(myPlsr))
-print("Detail of the variance explained by the first 'numComp' components")
+print("Detail of the variance explained for each parameter by each of the first 'numComp' components")
 print(summary(myPlsr))
 
 
