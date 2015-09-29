@@ -26,7 +26,6 @@ do
         -n|--nb-pls)
             shift
                 nb_pls=$1
-                
             shift
             ;;
         -p|--pls-file)
@@ -37,6 +36,7 @@ do
         -s|--stat-files)
             shift
             stats=()
+            echo $1
             while [[ $1 != -* ]]
             do
                 stats+=($1)
@@ -89,10 +89,10 @@ do
 done
 
 ## 4) perform the transformation
-    # 4.1) keep the n first principal components
+    # 4.1) keep the n first principal components of the pls file
 printf "\n## Perform the transformation\n"
 npls=`basename ${pls}`  # save the new file in current directory
-
+npls=${npls%.txt}.${nb_pls}pls.txt
 
 printf "cut -f1-$((7 + ${nb_pls})) ${pls} > ${npls}\n"
 cut -f1-$((7 + ${nb_pls})) ${pls} > ${npls}
@@ -108,16 +108,16 @@ do
     
     # uncompress
     echo ""
-    sta1=`basename ${sta0}`
-    sta1=${sta1%.gz}
+    sta1=`basename ${sta0%.gz}`
     printf "zcat ${sta0} > ${sta1}\n"
     zcat ${sta0} > ${sta1}
 
     # transform
-    sta2=${sta1%.txt}
-    sta2=${sta2}.transf.txt
+    sta2=${sta1%.txt}.transf.txt
     printf "./transformer ${npls} ${sta1} ${sta2} boxcox\n"
     ./transformer ${npls} ${sta1} ${sta2} boxcox
+    cut -f2- ${sta2} > ${sta2}.temp # have to remove the first empty column ceated by transformer
+    mv ${sta2}.temp ${sta2}
 
     # compress results
     printf "rm ${sta1}\n"

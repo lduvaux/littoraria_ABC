@@ -1,5 +1,0 @@
-- three steps in the ABC:
-    - simulations
-    - compute PLS
-    - ABC
-        - including the transfo of the stats using the PLS

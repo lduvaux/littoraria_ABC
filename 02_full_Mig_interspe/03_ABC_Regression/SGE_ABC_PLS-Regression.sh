@@ -29,6 +29,7 @@ pls_transf=true
 nb_pls=20
 pls_fil="../02_PLS_transformation/Routput_full_interspeMig.txt"
 stat_files="../01_prior2stats/ABCstat_full_interspeMig.1961048.*"
+obs_stats="../../ABCstat_observed_formatted.txt.gz"
 
     # Regression R script
 reg_script=ABC_PLS-Regression
@@ -47,25 +48,31 @@ echo "# working directory: ${PWD}"; echo ""
 
 ## 2) PLS transform original stats
 echo "## 2) PLS transform original stats"
-if [ -z $runtransf ]; then
+
+if [ -z $pls_transf ]; then
     echo "Do you want to PLS transform the original data?" 
     echo "    You have to specify 'pls_transf=true' or 'pls_transf=false'"
     echo "    in section '## 0) set variables'" 
     exit
-elif [ ${runtransf} = true ]; then
+elif [ ${pls_transf} = true ]; then
     echo "./PLS_transform.sh -n ${nb_pls} -p ${pls_fil} -s ${stat_files}"
     ./PLS_transform.sh -n ${nb_pls} -p ${pls_fil} -s ${stat_files}
+    echo ""
+
+    echo "./PLS_transform.sh -n ${nb_pls} -p ${pls_fil} -s ${obs_stats}"
+    ./PLS_transform.sh -n ${nb_pls} -p ${pls_fil} -s ${obs_stats}
 else
     echo "WARNING: the files with the original statistics were not processed"
     echo "  for PLS transformation. Are you sure that:"
-    echo "    - you specified the option 'runtransf' correctly (current value: ${runtransf})" 
+    echo "    - you specified the option 'pls_transf' correctly (current value: ${pls_transf})" 
     echo "    - the files with transformed statistics were already present" ; echo ""
 fi
 
 
 ## 3) perform regression
 echo "## 3) perform regression"
-R CMD BATCH ${reg_script}.R ${reg_script}.${jobid}.log
+obs_transf=`basename ${obs_stats%.txt.gz}.transf.txt.gz`
+Rscript ${reg_script}.R ${nb_pls} ${obs_transf} 2>&1 | tee ${reg_script}.${jobid}.log
 
 
 # display time
