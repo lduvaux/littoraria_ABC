@@ -49,31 +49,29 @@ end
 	@range n_repl
 
 	# Uniform priors on Ni=[5e4-5e5]=[5-50]*N0
-	N1 = rand() * (50 - 5) + 5
-	N2 = rand() * (50 - 5) + 5
-	N3 = rand() * (50 - 5) + 5
-	N4 = rand() * (50 - 5) + 5
+	N1 = rand() * (100 - 5) + 5
+	N2 = rand() * (100 - 5) + 5
+	N3 = rand() * (100 - 5) + 5
+	N4 = rand() * (100 - 5) + 5
 	@par N				[N1, N2, N3, N4]
 
-	# Uniform priors on migration rates Mij: intra-spe[0-10]
-	M12 = rand() * 10	# intra-spe: all equals
-	M21 = M12			#
-	M34 = M12			#
-	M43 = M12			#
+	# Uniform priors on migration rates Mij: [1e-3 - 1e1]
+	M12 = 10.0 ^ (rand() * (1 - (-3)) - 3)	# intra-spe: all equal
+	M21 = M12								#
+	M34 = M12								#
+	M43 = M12								#
 	@par mig			[M12, M21, M34, M43]
 
 	# uniform priors on historical events (in years):
-	T2 = rand() * (1e6 - 1e3) + 1e3			# [1e3 - 1e6] years
-	T3 = rand() * (1e6 - 1e3) + 1e3			# [1e3 - 1e6] years
-	maxT = max(T2, T3)						# take care that T4 always > T3 and T2 as ms won't raise any warning!
-	low_bd = max(maxT, 5e5)					# take care that the maxi has to be > 5e5 (lower bound of the prior)
-	T4 = rand() * (5e6 - low_bd) + low_bd	# [5e5 - 5e6], T4 > max(T2, T3)
+	T4 = rand() * (5e6 - 5e5) + 5e5			# [5e5 - 5e6] years
+	T2 = rand() * (T4 - 1e3) + 1e3			# [1e3 - T4] years
+	T3 = rand() * (T4 - 1e3) + 1e3			# [1e3 - T4] years
 		# convert times in unit of 4N0 generations! (1 generation a year)
 	T2 = T2 / (4 * n0)
 	T3 = T3 / (4 * n0)
 	T4 = T4 / (4 * n0)
 		# ancestral pop sizes
-	N5 = rand() * (50 - 5) + 5 # Na=[5e4-5e5]=[5-50]*N0
+	N5 = rand() * (100 - 5) + 5 # Na=[5e4-5e5]=[5-50]*N0
 	N6 = N5
 	N7 = N5
 	@par history		[T2, T2, N5, T3, T3, N6, T4, T4, N7]
