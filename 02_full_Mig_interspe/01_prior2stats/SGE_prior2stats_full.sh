@@ -23,24 +23,7 @@ export TIMECOUNTER=0
 source timeused
 
 
-## 0) Print miscellaneous variables for the log file
-echo "## 0) Print miscellaneous variables for the log file"
-#logname=${SGE_O_LOGNAME}
-jobid=${JOB_ID}
-taskid=${SGE_TASK_ID}
-host=${HOSTNAME}
-wd=`basename $PWD`
-
-date
-echo "# host:"
-echo $host
-echo "# Jobid:"
-echo $jobid
-echo "# taskid:"
-echo $taskid
-
-
-## 1) set simulation variables
+## 0) set simulation variables
 model=full_interspeMig
 printf "\n## 1) set simulation variables\n"
 nrep=500    # number of datasets to be simulated
@@ -50,6 +33,18 @@ maxi=4  # maximum number of SNPs (S) to be observed in simulated alignments
 N_ite=15 # max number of ms iterations in order to observe the right number of SNP for a given alignment
 thres=1 # maximum number of simuls with S < mini or maxi > 4
 suthr=1Pc   # suffix for output, 1Pc -> 6e2/6e4
+
+
+## 1) Print miscellaneous variables for the log file
+echo "## 0) Print miscellaneous variables for the log file"
+#logname=${SGE_O_LOGNAME}
+jobid=${JOB_ID} ; taskid=${SGE_TASK_ID} ; host=${HOSTNAME} ; wd=`basename $PWD`
+date
+echo "# host: ${host}"
+echo "# Jobid: ${jobid}"
+echo "# taskid: ${taskid}"
+echo "# working directory: ${PWD}"; echo ""
+
 
 ## 2) run simulations
 printf "\n## 2) run simulations\n"

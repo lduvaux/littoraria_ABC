@@ -13,13 +13,14 @@ do
             echo "$0 - transform original summary statistics using PLS components"
             echo " "
             echo "Usage:"
-            echo "$0 options"
+            echo "$0 -n <n> -p <pls_file> -s <stat_files>"
             echo " "
             echo "options:"
             echo "-h, --help                show this help"
-            echo "-n, --nb-pls              specify the number of pls components to keep"
-            echo "-p, --pls-file            specify the pls component file"
-            echo "-s, --stat-files          specify the files of original statistics"
+            echo "-n, --nb-pls              number of pls components to be kept"
+            echo "-p, --pls-file            name of the pls component file"
+            echo "-s, --stat-files          files with original sumamry statistics"
+            echo "                          (the star wildcard '*' is allowed)"
             exit 0
             ;;
         -n|--nb-pls)
