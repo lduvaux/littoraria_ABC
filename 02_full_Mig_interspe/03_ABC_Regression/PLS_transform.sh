@@ -36,7 +36,6 @@ do
         -s|--stat-files)
             shift
             stats=()
-            echo $1
             while [[ $1 != -* ]]
             do
                 stats+=($1)

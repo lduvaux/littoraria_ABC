@@ -36,7 +36,7 @@ reg_script=ABC_PLS-Regression
 
 
 ## 1) Print miscellaneous variables for the log file
-echo "## 0) Print miscellaneous variables for the log file"
+echo "## 1) Print miscellaneous variables for the log file"
 #logname=${SGE_O_LOGNAME}
 jobid=${JOB_ID} ; taskid=${SGE_TASK_ID} ; host=${HOSTNAME} ; wd=`basename $PWD`
 date

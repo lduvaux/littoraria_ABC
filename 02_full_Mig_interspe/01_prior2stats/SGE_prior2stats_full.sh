@@ -50,8 +50,7 @@ echo "# working directory: ${PWD}"; echo ""
 printf "\n## 2) run simulations\n"
     # 2.1) set file names
 rand_seed=${taskid}${jobid}
-echo "random seed:"
-printf "${rand_seed}"
+echo "random seed: ${rand_seed}"; echo ""
 
 suf=${model}.${jobid}.${taskid}
 ms_out=ms-ali_${suf}.txt
