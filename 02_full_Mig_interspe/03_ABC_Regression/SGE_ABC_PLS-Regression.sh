@@ -50,9 +50,10 @@ echo "# working directory: ${PWD}"; echo ""
 echo "## 2) PLS transform original stats"
 
 if [ -z $pls_transf ]; then
-    echo "Do you want to PLS transform the original data?" 
-    echo "    You have to specify 'pls_transf=true' or 'pls_transf=false'"
-    echo "    in section '## 0) set variables'" 
+    echo "Option 'pls_transf' not specified:"
+    echo "  Do you want to PLS transform the original data?" 
+    echo "    Please specify 'pls_transf=true' or 'pls_transf=false'"
+    echo "    in section '## 0) set variables' of the SGE script" 
     exit
 elif [ ${pls_transf} = true ]; then
     echo "./PLS_transform.sh -n ${nb_pls} -p ${pls_fil} -s ${stat_files}"
@@ -61,13 +62,17 @@ elif [ ${pls_transf} = true ]; then
 
     echo "./PLS_transform.sh -n ${nb_pls} -p ${pls_fil} -s ${obs_stats}"
     ./PLS_transform.sh -n ${nb_pls} -p ${pls_fil} -s ${obs_stats}
-else
+elif [ ${pls_transf} = false ]; then
     echo "WARNING: the files with the original statistics were not processed"
     echo "  for PLS transformation. Are you sure that:"
     echo "    - you specified the option 'pls_transf' correctly (current value: ${pls_transf})" 
     echo "    - the files with transformed statistics were already present" ; echo ""
+else
+    echo "Option 'pls_transf' badly specified:"
+    echo "    Please specify 'pls_transf=true' or 'pls_transf=false'"
+    echo "    in section '## 0) set variables' of the SGE script" 
 fi
-
+exit
 
 ## 3) perform regression
 echo "## 3) perform regression"
