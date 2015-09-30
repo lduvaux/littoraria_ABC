@@ -1,13 +1,13 @@
 TEST_ABC <- T
-N_TASKS <- 60
-N_REP <- 1750
-N_DATA <- N_TASKS * N_REP
+N_FILES <- 5
+N_REP <- 500
+N_DATA <- N_FILES * N_REP
 MODEL <- "full_interspeMig"
 
 # bad simuls
 READ_BADF <- T  # do I load bad simulation text file? if not I load the Rdata bad simulation file
-PREF_BADS <- paste("Badsimul_thres1Pc_",MODEL,sep="")
-PATH_BADS <- "../"
+PREF_BADS <- paste("Badsimul_thres1Pc_", MODEL ,sep="")
+PATH_BADS <- "../01_prior2stats/"
 RDATA_BAD <- paste(PREF_BADS, "Rdata", sep=".")
 
 # priors
@@ -19,17 +19,13 @@ RDATA_PRIOR <- paste(PREF_PRIOR, "Rdata", sep=".")
 
 # simulated stats
 READ_STATF <- T    # do I load stat text file? if not I load Rdata stat file
-PREF_STAT <- paste("ABCstat_",MODEL,sep="")
-PATH_STAT <- PATH_BADS
-STATS <- c(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,110,112,114,116,146,148,150,152,182,184,186,188,218,220,222,224,254,256,258,260) # vector of stats to be kept for the abc analysis
+PREF_STAT <- paste("ABCstat_", MODEL, sep="")
+PATH_STAT <- "./"
 RDATA_STAT <- paste(PREF_STAT, "Rdata", sep=".")
-
-# observed stats
-F_OBS <- "./ABCstat_observed.txt"
 
 # ABC parameters
 LOAD_REG <- F
-TOL <- 0.1 # proportion of points accepted nearest the target values.
+TOL <- 0.05 # proportion of points accepted nearest the target values.
 METH <- "neuralnet"    # ABC algorithm
 VTRANSF <- rep("logit", length(PRIORS)) # a vector of character strings indicating the kind of transformation to be applied to the parameter values.
 LOGITBD <- function(prior, signi=1){ # a matrix of bounds if 'transf' is '"logit"'.  The matrix has as many lines as parameters (including the ones that are not '"logit"' transformed) and 2 columns. First column is the minimum bound and second column is the maximum bound.
