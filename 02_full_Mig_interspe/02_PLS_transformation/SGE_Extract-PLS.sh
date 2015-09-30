@@ -24,11 +24,11 @@ R_script=PLS-extraction
 
 
 ## 1) Print miscellaneous variables for the log file
-echo "## 0) Print miscellaneous variables for the log file"
-#logname=${SGE_O_LOGNAME}
-jobid=${JOB_ID} ; taskid=${SGE_TASK_ID} ; host=${HOSTNAME} ; wd=`basename $PWD`
+echo "## 1) Print miscellaneous variables for the log file"
+jobid=${JOB_ID} ; taskid=${SGE_TASK_ID} ; host=${HOSTNAME} ; wd=`basename $PWD`# ; logname=${SGE_O_LOGNAME}
 date
 echo "# host: ${host}"
+#echo "# logname: ${logname}"
 echo "# Jobid: ${jobid}"
 echo "# taskid: ${taskid}"
 echo "# working directory: ${PWD}"; echo ""

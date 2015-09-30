@@ -25,7 +25,7 @@ RDATA_STAT <- paste(PREF_STAT, "Rdata", sep=".")
 
 # ABC parameters
 LOAD_REG <- F
-TOL <- 0.1 # proportion of points accepted nearest the target values.
+TOL <- 0.05 # proportion of points accepted nearest the target values.
 METH <- "neuralnet"    # ABC algorithm
 VTRANSF <- rep("logit", length(PRIORS)) # a vector of character strings indicating the kind of transformation to be applied to the parameter values.
 LOGITBD <- function(prior, signi=1){ # a matrix of bounds if 'transf' is '"logit"'.  The matrix has as many lines as parameters (including the ones that are not '"logit"' transformed) and 2 columns. First column is the minimum bound and second column is the maximum bound.

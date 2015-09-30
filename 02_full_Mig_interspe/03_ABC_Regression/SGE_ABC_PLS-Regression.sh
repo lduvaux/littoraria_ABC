@@ -37,10 +37,10 @@ reg_script=ABC_PLS-Regression
 
 ## 1) Print miscellaneous variables for the log file
 echo "## 1) Print miscellaneous variables for the log file"
-#logname=${SGE_O_LOGNAME}
-jobid=${JOB_ID} ; taskid=${SGE_TASK_ID} ; host=${HOSTNAME} ; wd=`basename $PWD`
+jobid=${JOB_ID} ; taskid=${SGE_TASK_ID} ; host=${HOSTNAME} ; wd=`basename $PWD`# ; logname=${SGE_O_LOGNAME}
 date
 echo "# host: ${host}"
+#echo "# logname: ${logname}"
 echo "# Jobid: ${jobid}"
 echo "# taskid: ${taskid}"
 echo "# working directory: ${PWD}"; echo ""
@@ -72,7 +72,7 @@ fi
 ## 3) perform regression
 echo "## 3) perform regression"
 obs_transf=`basename ${obs_stats%.txt.gz}.transf.txt.gz`
-Rscript ${reg_script}.R ${nb_pls} ${obs_transf} 2>&1 | tee ${reg_script}.${jobid}.log
+Rscript ${reg_script}.R ${nb_pls} ${obs_transf} 2>&1 > ${reg_script}.${jobid}.log
 
 
 # display time

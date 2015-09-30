@@ -22,9 +22,9 @@ RDATA_PRIOR <- paste(PREF_PRIOR, "Rdata", sep=".")
 READ_STATF <- T    # do I load stat text file? if not I load Rdata stat file
 PREF_STAT <- paste("ABCstat_",MODEL,sep="")
 PATH_STAT <- PATH_BADS
-STATS <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,109,110,111,112,113,114,115,116,145,146,147,148,149,150,151,152,181,182,183,184,185,186,187,188,217,218,219,220,221,222,223,224,253,254,255,256,257,258,259,260) # vector of stats to be kept for the abc analysis
+STATS <- c(1:80, 109:116, 145:152, 181:188, 217:224, 253:260) # vector of stats to be kept for the abc analysis
 RDATA_STAT <- paste(PREF_STAT, "Rdata", sep=".")
 
 # PLS extraction
-NUMCOMP <- 40   # nber of compoenents to compute
+NUMCOMP <- 40   # nber of components to compute
 DIROUT <- "./"
