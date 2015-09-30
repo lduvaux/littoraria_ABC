@@ -26,8 +26,8 @@ if (READ_PRIORF) {
 }
 
 print("    # I.3) load simulated stats")
-#~nb_pls <- commandArgs(trailingOnly = T) [1]
-nb_pls <- 20
+nb_pls <- commandArgs(trailingOnly = T) [1]
+#~if (DEBUG) nb_pls <- 10
 print(paste("Number of retained PLS components:", nb_pls))
 STATS <- 1:nb_pls   # the 
 if (READ_STATF) {
@@ -44,7 +44,7 @@ print("### II) ABC analysis")
 print("    # II.1) load observed stats")
 print("         # Do not mind the warning message about the file incomplete final line")
 F_OBS <- commandArgs(trailingOnly = T) [2]
-F_OBS <- "ABCstat_observed_formatted.transf.txt.gz"
+#~if (DEBUG) F_OBS <- "ABCstat_observed_formatted.transf.txt.gz"
 print(F_OBS)
 obs_stat <- unlist(read.table(F_OBS, header=T, sep="\t", strip.white = T, stringsAsFactors = F)[,STATS])
 print(obs_stat)
@@ -54,7 +54,7 @@ print("    # II.1) perform ABC")
 if (!LOAD_REG)
 {
     print("    # Compute regression")
-    if (TEST_ABC) NUMNET <- 3
+#~    if (DEBUG) NUMNET <- 3
     logitbd <- LOGITBD(prior)
     print (paste("myres <- abc(target=obs_stat, param=prior, sumstat=stat, tol=", TOL, ", method='", METH, "', transf=VTRANSF, numnet=", NUMNET, ", sizenet=", SIZENET, ", trace=T, logit.bounds=logitbd)", sep=""))
     myres <- abc(target=obs_stat, param=prior, sumstat=stat, tol=TOL, method=METH, transf=VTRANSF, numnet=NUMNET, sizenet=SIZENET, trace=T, logit.bounds=logitbd)

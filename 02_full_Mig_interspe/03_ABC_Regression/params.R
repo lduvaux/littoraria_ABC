@@ -1,4 +1,4 @@
-TEST_ABC <- T
+#~DEBUG <- F  # set to true if you want to make some quick tests
 N_FILES <- 5
 N_REP <- 500
 N_DATA <- N_FILES * N_REP
