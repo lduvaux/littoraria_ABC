@@ -26,13 +26,13 @@ source timeused
 ## 0) set simulation variables
 model=full_interspeMig
 printf "\n## 1) set simulation variables\n"
-nrep=500    # number of datasets to be simulated
-nloc=1000    # number of loci to simulate per dataset
+nrep=1750    # number of datasets to be simulated
+nloc=29623    # number of loci to simulate per dataset
 mini=1  # minimum number of SNPs (S) to be observed in simulated alignments
 maxi=4  # maximum number of SNPs (S) to be observed in simulated alignments
-N_ite=15 # max number of ms iterations in order to observe the right number of SNP for a given alignment
-thres=1 # maximum number of simuls with S < mini or maxi > 4
-suthr=1Pc   # suffix for output, 1Pc -> 6e2/6e4
+N_ite=20 # max number of ms iterations in order to observe the right number of SNP for a given alignment
+thres=150 # maximum number of simuls with S < mini or maxi > 4
+suthr=0.5Pc   # suffix for output, 1Pc -> 6e2/6e4
 
 
 ## 1) Print miscellaneous variables for the log file

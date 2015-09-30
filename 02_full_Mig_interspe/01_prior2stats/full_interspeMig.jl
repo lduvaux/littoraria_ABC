@@ -16,7 +16,7 @@ using SimGenerator
 	n0 = 1e4	# size of reference population: 10,000
 	mu = 3e-9	# mutation rate
 	# r = 0		# recombination rate, not needed here
-	n_sites = 82	# tag length
+	n_sites = 82	# locus length
 	n_repl = int(ARGS[1])	# number of datasets (i.e. dataset simulations).
 	n_loci = int(ARGS[2])	# number of loci per dataset
 	theta0 = 4 * n0 * mu * n_sites

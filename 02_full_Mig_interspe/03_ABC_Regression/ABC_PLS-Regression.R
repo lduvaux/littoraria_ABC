@@ -29,7 +29,7 @@ print("    # I.3) load simulated stats")
 nb_pls <- commandArgs(trailingOnly = T) [1]
 #~if (DEBUG) nb_pls <- 10
 print(paste("Number of retained PLS components:", nb_pls))
-STATS <- 1:nb_pls   # the 
+STATS <- 1:nb_pls   # the number of PLS to keep
 if (READ_STATF) {
     ids2 <- gsub(".txt.gz", ".transf.txt.gz", ids)
     stat <- read_stat(pattern=PREF_STAT, path=PATH_STAT, n_files=N_FILES,

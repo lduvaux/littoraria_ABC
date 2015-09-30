@@ -1,6 +1,6 @@
 #~DEBUG <- F  # set to true if you want to make some quick tests
-N_FILES <- 5
-N_REP <- 500
+N_FILES <- 572  # number of [prior | stat] files 
+N_REP <- 1750   # number of datasets per file
 N_DATA <- N_FILES * N_REP
 MODEL <- "full_interspeMig"
 
@@ -25,7 +25,10 @@ RDATA_STAT <- paste(PREF_STAT, "Rdata", sep=".")
 
 # ABC parameters
 LOAD_REG <- F
-TOL <- 0.05 # proportion of points accepted nearest the target values.
+TOL <- 0.05 
+    # TOL: proportion of points accepted nearest the target values.
+    # 0.05 good for an initial test with 1e5 datasets (i.e. 5e3 datasets retained)
+    # for the final estimation (1e6 simulated datasets), 0.001 is a better value (1e4 datasets retained)
 METH <- "neuralnet"    # ABC algorithm
 VTRANSF <- rep("logit", length(PRIORS)) # a vector of character strings indicating the kind of transformation to be applied to the parameter values.
 LOGITBD <- function(prior, signi=1){ # a matrix of bounds if 'transf' is '"logit"'.  The matrix has as many lines as parameters (including the ones that are not '"logit"' transformed) and 2 columns. First column is the minimum bound and second column is the maximum bound.
@@ -33,7 +36,9 @@ LOGITBD <- function(prior, signi=1){ # a matrix of bounds if 'transf' is '"logit
     res <- t(apply(prior, 2, function(x) round(range(x), signi)))
     return(res)
     }  
-NUMNET <- 100  # the number of neural networks when 'method' is '"neuralnet"'. Defaults to 10
+NUMNET <- 100
+    # the number of neural networks when 'method' is '"neuralnet"'.
+    # Defaults to 10, 100 is good for the final estimation
 SIZENET <- length(PRIORS) # the number of units in the hidden layer.
 
 # ABC outputs
