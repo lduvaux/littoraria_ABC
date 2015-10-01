@@ -1,11 +1,13 @@
 using Distributions
 using SimGenerator
 
+
 # Model without inter-species migration.
 # Loci share demographic parameters (Ni, Ts, Mi) and mutation rates but differ
 # with respect to sample sizes. Furthermore we essentially want to treat a set
 # of loci as one data point, therefore theta and rho become nuisance parameters
 # while migration rates are our priors for the ABC analysis.
+
 
 # Setup the simulation. [REQUIRED].
 @setup MSSimulation begin
@@ -44,6 +46,7 @@ using SimGenerator
 							[:time => TBS, :type => :num, :sizes => [1 => TBS]]	]
 end
 
+
 # Dataset of n_loci independent loci: what differ between datasets? [REQUIRED].
 @level dataset begin
 	@range n_repl
@@ -70,12 +73,14 @@ end
 	T2 = T2 / (4 * n0)
 	T3 = T3 / (4 * n0)
 	T4 = T4 / (4 * n0)
+
 		# ancestral pop sizes
 	N5 = rand() * (100 - 5) + 5 # Na=[5e4-5e5]=[5-50]*N0
 	N6 = N5
 	N7 = N5
 	@par history		[T2, T2, N5, T3, T3, N6, T4, T4, N7]
 end
+
 
 # Set parameters across loci within datasets. If any varies, it has to be set here. [REQUIRED].
 	# in our case, nothing varies. In this case we just need to set 
@@ -86,6 +91,7 @@ end
 
 	@par theta			theta0
 end
+
 
 # Declare which variables are to be printed out as priors (for ABC analysis).
 # Theta and rho are nuisance parameters, the ones we are interested in are 
@@ -103,9 +109,11 @@ end
 
 end
 
+
 # Declare which level should be considered as a single sample in terms
 # of summary stats (used for spinput generation). [REQUIRED].
 @set sample dataset
+
 
 # Run, this time print priors as well as the spinput file (for the summary stats). [REQUIRED].
 @set run begin

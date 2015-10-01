@@ -12,12 +12,11 @@ using SimGenerator
 # Setup the simulation. [REQUIRED].
 @setup MSSimulation begin
 
-#	some global variable (accessible throughout the entire file).
-	n0 = 1e4	# size of reference population: 10,000
-	mu = 3e-9	# mutation rate
-	# r = 0		# recombination rate, not needed here
-	n_sites = 82	# locus length
-	n_repl = int(ARGS[1])	# number of datasets (i.e. dataset simulations).
+#	set some global variables (accessible throughout the entire file)
+	n0 = 1e4				# size of reference population: 10,000
+	mu = 3e-9				# mutation rate
+	n_sites = 82			# tag length
+	n_repl = int(ARGS[1])	# number of datasets (i.e. dataset simulations)
 	n_loci = int(ARGS[2])	# number of loci per dataset
 	theta0 = 4 * n0 * mu * n_sites
 
@@ -25,7 +24,6 @@ using SimGenerator
 		# here the random seed
 	srand(int(ARGS[3]))
 	# suffix of the output files
-#	suf = "test"
 	suf = ARGS[4]
 
 	# total number of simulations performed by ms
@@ -49,6 +47,7 @@ using SimGenerator
 							[:time => TBS, :type => :num, :sizes => [1 => TBS]]	]
 end
 
+
 # Dataset of n_loci independent loci: what differ between datasets? [REQUIRED].
 @level dataset begin
 	@range n_repl
@@ -68,24 +67,25 @@ end
 	M23 = 10.0 ^ (rand() * (1 - (-3)) - 3)	# inter-spe: all equal
 	M32 = M23								#
 	@par mig			[M12, M21, M23, M32, M34, M43]
-	
+
 	# uniform priors on historical events (in years):
 	T1 = rand() * (50e3 - 1e3) + 1e3		# [1e3 - 5e4] years
 	T4 = rand() * (5e6 - 5e5) + 5e5			# [5e5 - 5e6] years
 	T2 = rand() * (T4 - T1) + T1			# [T1 - T4] years
 	T3 = rand() * (T4 - T1) + T1			# [T1 - T4] years
-
 		# convert times in unit of 4N0 generations! (1 generation a year)
 	T1 = T1 / (4 * n0)
 	T2 = T2 / (4 * n0)
 	T3 = T3 / (4 * n0)
 	T4 = T4 / (4 * n0)
+
 		# ancestral pop sizes
 	N5 = rand() * (100 - 5) + 5 # Na=[5e4-5e5]=[5-50]*N0
 	N6 = N5
 	N7 = N5
 	@par history		[T1, T1, T2, T2, N5, T3, T3, N6, T4, T4, N7]
 end
+
 
 # Set parameters across loci within datasets. If any varies, it has to be set here. [REQUIRED].
 	# in our case, nothing varies. In this case we just need to set 
@@ -114,6 +114,7 @@ end
 
 end
 
+
 # Declare which level should be considered as a single sample in terms
 # of summary stats (used for spinput generation). [REQUIRED].
 @set sample dataset
@@ -127,6 +128,3 @@ end
 	@spinput_out	"spinput_" * suf * ".txt"
 	@command		"msnseg"
 end
-
-
-
