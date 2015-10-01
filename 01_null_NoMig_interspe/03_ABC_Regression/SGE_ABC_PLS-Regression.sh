@@ -27,8 +27,8 @@ source timeused
     # PLS transform script
 pls_transf=true
 nb_pls=12
-pls_fil="../02_PLS_transformation/Routput_full_interspeMig.txt"
-stat_files="../01_prior2stats/ABCstat_full_interspeMig.*"
+pls_fil="../02_PLS_transformation/Routput_null_interspeNoMig.txt"
+stat_files="../01_prior2stats/ABCstat_null_interspeNoMig.*"
 obs_stats="../../ABCstat_observed_formatted.txt.gz"
 
     # Regression R script
