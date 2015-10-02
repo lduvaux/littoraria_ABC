@@ -19,6 +19,11 @@
 #$ -t 1-1
 
 
+# set the environment variable TIMECOUNTER to 0, then start the chrono
+export TIMECOUNTER=0
+source timeused
+
+
 ## 0) set simulation variables
 R_script=PLS-extraction
 
