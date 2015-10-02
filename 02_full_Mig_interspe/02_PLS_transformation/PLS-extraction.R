@@ -39,9 +39,11 @@ if (READ_STATF) {
     stat <- read_stat(pattern=PREF_STAT, path=PATH_STAT, n_files=N_FILES,
         n_data=N_DATA, vstats=STATS, model=MODEL, id=ids,
         test_bad=test_bad, bads=bads)
-    na_stat <- which(is.na(prior), arr.ind=T)
+    na_stat <- which(is.na(stat), arr.ind=T)
     if (dim(na_stat)[1] > 0) {
         stat <- stat[-na_stat[,1],]
+        prior <- prior[-na_stat[,1],]
+        save(prior, na_prior, file=RDATA_PRIOR)  # save clean matrix of priors as it's quicker to reload a R object
     }
     save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats as it's quicker to reload a R object
 } else {
