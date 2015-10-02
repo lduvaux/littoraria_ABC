@@ -1,7 +1,7 @@
 rm(list=ls())
 library("abc")
 source("./params.R")
-source("./functions_abc.R")
+source("./functions.R")
 
 print("### I) load data")
 print("    # I.1) load bad simuls")
