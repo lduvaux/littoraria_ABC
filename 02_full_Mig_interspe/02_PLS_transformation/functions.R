@@ -1,4 +1,4 @@
-read_badf <-  function(pattern, path, n_files, n_data, file, n_rep, model){
+read_badf <-  function(pattern, path, n_files, n_data, n_rep, model){
 
     f_bads <- dir(pattern = pattern, path = path, full.names = T)[1:n_files]
     bads <- as.data.frame(matrix(ncol = 3, nrow = n_data))
@@ -31,11 +31,10 @@ read_badf <-  function(pattern, path, n_files, n_data, file, n_rep, model){
     }
     bads <- bads[-c(ite:nrow(bads)),]
     test_bad <- nrow(bads) > 0
-    save(bads, test_bad, file=file)  # save clean set of bads simuls as it's quicker to reload a R object
     return(list(bads=bads, test_bad=test_bad, IDs=IDs))
 }
 
-read_prior <- function(pattern, path, n_files, n_data, vpriors, file, model, ids){
+read_prior <- function(pattern, path, n_files, n_data, vpriors, model, ids, test_bad, bads){
 
     prior <- matrix(ncol = length(vpriors), nrow = n_data)
     ite <- 1
@@ -52,11 +51,10 @@ read_prior <- function(pattern, path, n_files, n_data, vpriors, file, model, ids
         ite <- ite+npr
     }
     if (test_bad) prior <- prior [-bads$dataset_Nb,]  # remove bad datasets
-    save(prior, file=file)  # save clean matrix of priors as it's quicker to reload a R object
     return(prior)
 }
 
-read_stat <-  function(pattern, path, n_files, n_data, vstats, file, model, ids){
+read_stat <-  function(pattern, path, n_files, n_data, vstats, model, ids, test_bad, bads){
 
     stat <- matrix(ncol = length(vstats), nrow = n_data)
     ite <- 1
@@ -73,6 +71,5 @@ read_stat <-  function(pattern, path, n_files, n_data, vstats, file, model, ids)
         ite <- ite+nst
     }
     if (test_bad) stat <- stat [-bads$dataset_Nb,]  # remove bad datasets
-    save(stat, file=file)  # save clean matrix of stats as it's quicker to reload a R object
     return(stat)
 }

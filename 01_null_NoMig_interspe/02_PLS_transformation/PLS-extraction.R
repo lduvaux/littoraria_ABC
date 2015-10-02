@@ -8,10 +8,11 @@ print("### I) load data")
 print("    # I.1) load bad simuls")
 if (READ_BADF){
     lbads <- read_badf(pattern=PREF_BADS, path=PATH_BADS, n_files=N_FILES,
-        n_data=N_DATA, file=RDATA_BAD, n_rep=N_REP, model=MODEL)
+        n_data=N_DATA, n_rep=N_REP, model=MODEL)
     bads <- lbads$bads
     test_bad <- lbads$test_bad
     ids <- lbads$IDs
+    save(bads, test_bad, ids, file=RDATA_BAD)  # save clean set of bads simuls as it's quicker to reload a R object
     rm(lbads)
 } else {
     load(RDATA_BAD)
@@ -20,8 +21,15 @@ if (READ_BADF){
 print("    # I.2) load priors")
 if (READ_PRIORF) {
     prior <- read_prior(pattern=PREF_PRIOR, path=PATH_PRIOR,
-        n_files=N_FILES, vpriors=PRIORS, n_data=N_DATA, file=RDATA_PRIOR,
-        model=MODEL, id=ids)
+        n_files=N_FILES, vpriors=PRIORS, n_data=N_DATA,
+        model=MODEL, id=ids, test_bad=test_bad, bads=bads)
+
+    na_prior <- which(is.na(prior), arr.ind=T)
+    if (dim(na_prior)[1] > 0) {
+        print ("ERROR: na present in priors!!!")
+        quit(status = 1)
+    }
+    save(prior, na_prior, file=RDATA_PRIOR)  # save clean matrix of priors as it's quicker to reload a R object
 } else {
     load(RDATA_PRIOR)
 }
@@ -29,7 +37,13 @@ if (READ_PRIORF) {
 print("    # I.3) load simulated stats")
 if (READ_STATF) {
     stat <- read_stat(pattern=PREF_STAT, path=PATH_STAT, n_files=N_FILES,
-        n_data=N_DATA, vstats=STATS, file=RDATA_STAT, model=MODEL, id=ids)
+        n_data=N_DATA, vstats=STATS, model=MODEL, id=ids,
+        test_bad=test_bad, bads=bads)
+    na_stat <- which(is.na(prior), arr.ind=T)
+    if (dim(na_stat)[1] > 0) {
+        stat <- stat[-na_stat[,1],]
+    }
+    save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats as it's quicker to reload a R object
 } else {
     load(RDATA_STAT)
 }
