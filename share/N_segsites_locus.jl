@@ -1,7 +1,7 @@
 #!/usr/local/extras/Genomics/bin/julia
 using GZip
 
-function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1, jobID="", taskID="")
+function run(inp; nloc=1, out="res.txt.gz", model="", minn=1, maxx=4, thres=1, jobID="", taskID="")
 
 #	println("parameter values (min, max and threshold):")
 #	println(minn)
@@ -58,5 +58,5 @@ else
 	jobID = ""
 	taskID = ""
 end
-run(inp, nloc=nloc, out=out, minn=mini, maxx=maxi, thres=thres, jobID=jobID, taskID=taskID)
+run(inp, nloc=nloc, out=out, model=model, minn=mini, maxx=maxi, thres=thres, jobID=jobID, taskID=taskID)
 
