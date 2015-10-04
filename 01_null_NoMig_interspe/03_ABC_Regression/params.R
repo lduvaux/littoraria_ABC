@@ -14,7 +14,7 @@ RDATA_BAD <- paste(PREF_BADS, "Rdata", sep=".")
 READ_PRIORF <- T    # do I load prior text file? if not I load Rdata prior file
 PREF_PRIOR <- paste("priors_",MODEL,sep="")
 PATH_PRIOR <-  PATH_BADS
-PRIORS <- c(1:5, 7, 11, 13, 15, 16, 19) # vector of parameters to be kept for the abc analysis
+PRIORS <- c(1:5, 9, 11, 12, 15) # vector of parameters to be kept for the abc analysis
 RDATA_PRIOR <- paste(PREF_PRIOR, "Rdata", sep=".")
 
 # simulated stats
