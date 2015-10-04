@@ -1,0 +1,1 @@
+../../share/N_segsites_locus.jl
