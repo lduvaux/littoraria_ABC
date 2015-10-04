@@ -74,8 +74,8 @@ printf "\n## 4) check number of incorrect datasets\n"
 grep "segsites" ${ms_out} > N_segsites_${suf}.txt
 gzip N_segsites_${suf}.txt
 rm ${ms_out}
-printf "N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} ${jobid} ${taskid}\n"
-N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} ${jobid} ${taskid}
+printf "\n./N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} ${jobid} ${taskid}\n"
+./N_segsites_locus.jl N_segsites_${suf}.txt.gz Badsimul_thres${suthr}_${suf}.txt.gz ${thres} ${nloc} ${mini} ${maxi} ${jobid} ${taskid}
 
 
 ## z) display time
