@@ -2,7 +2,6 @@
 using GZip
 
 function run(inp; nloc=1, out="res.txt.gz", model="", minn=1, maxx=4, thres=1, jobID="", taskID="")
-
 #	println("parameter values (min, max and threshold):")
 #	println(minn)
 #	println(maxx)
@@ -18,6 +17,9 @@ function run(inp; nloc=1, out="res.txt.gz", model="", minn=1, maxx=4, thres=1, j
 	simID = 1	# dataset ID
 	GZip.write(res, "Simulation ID\n")
 	for l in eachline(f)
+        if (l == "")
+            continue
+        end
 		l = strip(l, '\n')
 		elem = split(l, ' ')
 		ss = int(elem[2])
@@ -54,9 +56,9 @@ maxi = int(ARGS[7])
 if (length(ARGS) > 7)
 	jobID = ARGS[8]
 	taskID = ARGS[9]
+    println("run($(inp), nloc=$(nloc), out=$(out), model=$(model), minn=$(mini), maxx=$(maxi), thres=$(thres), jobID=$(jobID), taskID=$(taskID))")
+    run(inp, nloc=nloc, out=out, model=model, minn=mini, maxx=maxi, thres=thres, jobID=jobID, taskID=taskID)
 else
-	jobID = ""
-	taskID = ""
+    println("run($(inp), nloc=$(nloc), out=$(out), model=$(model), minn=$(mini), maxx=$(maxi), thres=$(thres))")
+	run(inp, nloc=nloc, out=out, model=model, minn=mini, maxx=maxi, thres=thres)
 end
-run(inp, nloc=nloc, out=out, model=model, minn=mini, maxx=maxi, thres=thres, jobID=jobID, taskID=taskID)
-
