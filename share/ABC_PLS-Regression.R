@@ -1,13 +1,13 @@
 rm(list=ls())
 library("abc")
 source("./params.R")
-source("./functions.R")
+source("../../share/functions.R")
 
 print("### I) load data")
 print("    # I.1) load bad simuls")
 if (READ_BADF){
     lbads <- read_badf(pattern=PREF_BADS, path=PATH_BADS, n_files=N_FILES,
-        n_data=N_DATA, n_rep=N_REP, model=MODEL)
+        n_rep=N_REP, model=MODEL)
     bads <- lbads$bads
     test_bad <- lbads$test_bad
     ids <- lbads$IDs
@@ -19,10 +19,15 @@ if (READ_BADF){
 
 print("    # I.2) load priors")
 if (READ_PRIORF) {
-    prior <- read_prior(pattern=PREF_PRIOR, path=PATH_PRIOR,
-        n_files=N_FILES, vpriors=PRIORS, n_data=N_DATA,
-        model=MODEL, id=ids, test_bad=test_bad, bads=bads)
-    save(prior, file=RDATA_PRIOR)  # save clean matrix of priors as it's quicker to reload a R object
+    prior <- read_sim_files(pattern=PREF_PRIOR, ids=ids, path=PATH_PRIOR,
+		n_rep=N_REP, vcol=PRIORS, test_bad=test_bad, bads=bads, is.prior=T)
+
+    na_prior <- which(is.na(prior), arr.ind=T)
+    if (dim(na_prior)[1] > 0) {
+        print ("ERROR: na present in priors!!!")
+        quit(status = 1)
+    }
+    save(prior, na_prior, file=RDATA_PRIOR)  # save clean matrix of priors as it's quicker to reload a R object
 } else {
     load(RDATA_PRIOR)
 }
@@ -34,11 +39,16 @@ print(paste("Number of retained PLS components:", nb_pls))
 STATS <- 1:nb_pls   # the number of PLS to keep
 if (READ_STATF) {
     ids2 <- gsub(".txt.gz", ".transf.txt.gz", ids)
-    stat <- read_stat(pattern=PREF_STAT, path=PATH_STAT, n_files=N_FILES,
-        n_data=N_DATA, vstats=STATS, model=MODEL, id=ids2,
-        test_bad=test_bad, bads=bads)
-    save(stat, file=RDATA_STAT)  # save clean matrix of stats as it's quicker to reload a R object
-} else {
+    stat <- read_sim_files(pattern=PREF_STAT, ids=ids2, path=PATH_STAT, 
+		n_rep=N_REP, vcol=STATS, test_bad=test_bad, bads=bads, is.prior=F)
+
+    na_stat <- which(is.na(stat), arr.ind=T)
+    if (dim(na_stat)[1] > 0) {
+        stat <- stat[-na_stat[,1],]
+        prior <- prior[-na_stat[,1],]  # amend the prior matrix accordingly
+        save(prior, na_prior, file=RDATA_PRIOR)  # ... and save it anew
+    }
+    save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats as it's quicker to reload a R object} else {
     load(RDATA_STAT)
 }
 cat ("\n")

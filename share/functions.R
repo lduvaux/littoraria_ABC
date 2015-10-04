@@ -1,12 +1,17 @@
 read_badf <-  function(pattern, path, n_files, n_data, n_rep, model){
+# pattern: pattern of input file names
+# path: path of input files
+# n_files: number of files to be loaded
+# n_rep: number of datasets per input file
+# model: model prefix
 
     f_bads <- dir(pattern = pattern, path = path, full.names = T)[1:n_files]
-    bads <- as.data.frame(matrix(ncol = 3, nrow = n_data))
+    bads <- as.data.frame(matrix(ncol = 3, nrow = n_rep * n_files))
     IDs <- character(n_files)
 
     colnames(bads) <- c("jobID.taskID", "datasetID", "dataset_Nb")
     ite <- 1
-    data_nb <- 0
+    data_nb <- 0	# dataset ID
     for (ifil in seq(f_bads)){
         fil <- f_bads[ifil]
         sep <- paste(model, "\\.", sep="")
@@ -29,22 +34,35 @@ read_badf <-  function(pattern, path, n_files, n_data, n_rep, model){
         ite <- ite+nst
         data_nb <- data_nb + n_rep
     }
-    bads <- bads[-c(ite:nrow(bads)),]
+	bads <- bads[-c(ite:nrow(bads)),]	# remove empty rows
     test_bad <- nrow(bads) > 0
     return(list(bads=bads, test_bad=test_bad, IDs=IDs))
 }
 
-read_prior <- function(pattern, path, n_files, n_data, vpriors, model, ids, test_bad, bads){
+read_sim_files <- function(pattern, ids, path, n_rep, vcol, test_bad, bads, is.prior){
+# pattern: pattern of input file names
+# ids: IDs of input files
+# path: path of input files
+# n_rep: number of datasets per input file
+# vcol: columns of the table to be kept for the analysis
+# test_bad: is there bad datasets in the files?
+# bads: if so which ones?
+# is.prior: are the priors loaded?
 
-    prior <- matrix(ncol = length(vpriors), nrow = n_data)
+    prior <- matrix(ncol = length(vcol), nrow = n_rep * length(ids))
     ite <- 1
     for (i in seq(ids)){
         id <- ids[i]
         patt <- paste(pattern, ".", id, sep="")
         fil <- dir(pattern = patt, path = path, full.names = T)
         print (fil)
-        tab <- read.table(fil, header=T, sep=" ", stringsAsFactors = F)
-        tab <- as.matrix(tab[,-ncol(tab)])[,vpriors]
+        
+        if (is.prior) {
+			tab <- read.table(fil, header=T, sep=" ", stringsAsFactors = F)
+			tab <- as.matrix(tab[,-ncol(tab)])[,vcol]
+		} else {
+			tab <- read.table(fil, header=T, sep="\t", stringsAsFactors = F)
+			tab <- as.matrix(tab)[,vcol]}
         if (ite==1) colnames(prior) <- colnames(tab)
         npr <- nrow(tab)
         prior[ite:(ite+npr-1),] <- tab
@@ -52,24 +70,4 @@ read_prior <- function(pattern, path, n_files, n_data, vpriors, model, ids, test
     }
     if (test_bad) prior <- prior [-bads$dataset_Nb,]  # remove bad datasets
     return(prior)
-}
-
-read_stat <-  function(pattern, path, n_files, n_data, vstats, model, ids, test_bad, bads){
-
-    stat <- matrix(ncol = length(vstats), nrow = n_data)
-    ite <- 1
-    for (i in seq(ids)){
-        id <- ids[i]
-        patt <- paste(pattern, ".", id, sep="")
-        fil <- dir(pattern = patt, path = path, full.names = T)
-        print (fil)
-        tab <- read.table(fil, header=T, sep="\t", strip.white = T, stringsAsFactors = F)
-        tab <- as.matrix(tab[,vstats])
-        if (ite==1) colnames(stat) <- colnames(tab)
-        nst <- nrow(tab)
-        stat[ite:(ite+nst-1),] <- tab
-        ite <- ite+nst
-    }
-    if (test_bad) stat <- stat [-bads$dataset_Nb,]  # remove bad datasets
-    return(stat)
 }
