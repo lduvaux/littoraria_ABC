@@ -30,7 +30,7 @@ function run(inp; nloc=1, out="res.txt.gz", minn=1, maxx=4, thres=1, jobID="", t
 		# when we reach the last locus of a dataset, test threshold
 		if (i == nloc)
 			if (bad >= thres)
-				GZip.write(res, "null_interspeNoMig$(jobID)$(taskID)." * string(simID), "\n")
+				GZip.write(res, "$(model)$(jobID)$(taskID)." * string(simID), "\n")
 			end
 			# then re-initialize and increment
 			i = 0
@@ -45,14 +45,15 @@ end
 
 #### run script
 inp = ARGS[1]
-out = ARGS[2]
-thres = int(ARGS[3])
-nloc = int(ARGS[4])
-mini = int(ARGS[5])
-maxi = int(ARGS[6])
-if (length(ARGS) > 6)
-	jobID = ARGS[7]
-	taskID = ARGS[8]
+model = ARGS[2]
+out = ARGS[3]
+thres = int(ARGS[4])
+nloc = int(ARGS[5])
+mini = int(ARGS[6])
+maxi = int(ARGS[7])
+if (length(ARGS) > 7)
+	jobID = ARGS[8]
+	taskID = ARGS[9]
 else
 	jobID = ""
 	taskID = ""
