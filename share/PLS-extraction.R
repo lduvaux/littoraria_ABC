@@ -2,7 +2,7 @@ rm(list=ls())
 library("MASS")
 library("pls")
 source("./params.R")
-source("../../share/functions.R")
+source("./functions.R")
 
 print("### I) load data")
 print("    # I.1) load bad simuls")
