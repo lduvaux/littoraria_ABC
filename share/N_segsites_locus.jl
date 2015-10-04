@@ -17,7 +17,7 @@ function run(inp; nloc=1, out="res.txt.gz", model="", minn=1, maxx=4, thres=1, j
 	simID = 1	# dataset ID
 	GZip.write(res, "Simulation ID\n")
 	for l in eachline(f)
-        if (l == "")
+        if (l == "")    # there might be an empty line at the end of the input file
             continue
         end
 		l = strip(l, '\n')
