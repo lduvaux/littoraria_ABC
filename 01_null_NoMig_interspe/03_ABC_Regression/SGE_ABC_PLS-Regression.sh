@@ -14,7 +14,7 @@
 # specify the architecture of the node in which the job should run, so to avoid using the incompatible node
 #$ -l arch=intel*
 # run time for job in hours:mins:sec (max 168:0:0, jobs with h_rt < 8:0:0 have priority)
-# $ -l h_rt=7:59:59
+#$ -l h_rt=7:59:59
 # submit an array of t identical tasks being only differentiated by an index number
 #$ -t 1-1
 
