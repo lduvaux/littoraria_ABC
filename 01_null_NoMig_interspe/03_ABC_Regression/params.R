@@ -1,6 +1,6 @@
 #~DEBUG <- F  # set to true if you want to make some quick tests
-N_FILES <- 10  # number of [prior | stat] files 
-N_REP <- 500   # number of datasets per file
+N_FILES <- 60    # number of [prior | stat] files 
+N_REP <- 1750    # number of datasets per file
 N_DATA <- N_FILES * N_REP
 MODEL <- "null_interspeNoMig"
 
