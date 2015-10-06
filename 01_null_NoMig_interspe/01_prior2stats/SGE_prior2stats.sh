@@ -16,7 +16,7 @@
 # run time for job in hours:mins:sec (max 168:0:0, jobs with h_rt < 8:0:0 have priority)
 #$ -l h_rt=7:59:59
 # submit an array of t identical tasks being only differentiated by an index number
-#$ -t 1-10
+#$ -t 1-60
 
 # set the environment variable TIMECOUNTER to 0, then start the chrono
 export TIMECOUNTER=0
@@ -26,12 +26,12 @@ source timeused
 ## 0) set simulation variables
 model=null_interspeNoMig
 printf "\n## 1) set simulation variables\n"
-nrep=500    # number of datasets to simulate
-nloc=100    # number of loci to simulate per dataset
+nrep=1750   # number of datasets to simulate
+nloc=29623  # number of loci to simulate per dataset
 mini=1      # minimum number of SNPs (S) to be observed in simulated alignments
 maxi=4      # maximum number of SNPs (M) to be observed in simulated alignments
 N_ite=30    # maximum number of ms iterations in order to observe the right number of SNPs for a given alignment
-thres=1     # maximum number of simulations with segsites < mini or > maxi
+thres=296   # maximum number of simulations with segsites < mini or > maxi
 suthr=1Pc   # suffix for output
 
 
