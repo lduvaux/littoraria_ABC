@@ -67,8 +67,8 @@ end
 
 	# uniform priors on historical events (in years):
 	T4 = rand() * (5e6 - 5e5) + 5e5			# [5e5 - 5e6] years
-	T2 = rand() * (T4 - 0) + 0				# [1e3 - T4] years
-	T3 = rand() * (T4 - 0) + 0				# [1e3 - T4] years
+	T2 = rand() * (T4 - 0) + 0				# [0 - T4] years
+	T3 = rand() * (T4 - 0) + 0				# [0 - T4] years
 		# convert times in unit of 4N0 generations! (1 generation a year)
 	T2 = T2 / (4 * n0)
 	T3 = T3 / (4 * n0)
