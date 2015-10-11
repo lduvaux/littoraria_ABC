@@ -2,7 +2,7 @@
     # the original find_pls.R script reads 10,000 sets of stats and params
     # ben Jackson used 50,000 datasets in Butlin et al. Evolution 2014
 N_REP <- 1750    # nber of dataset per file
-N_FILES <- 60    # number fo files uploaded for PLS extraction
+N_FILES <- 572   # number fo files uploaded for PLS extraction
 #~N_REP <- 500    # nber of dataset per file - DEBUG
 #~N_FILES <- 5    # number fo files uploaded for PLS extraction - DEBUG
 N_DATA <- N_FILES * N_REP

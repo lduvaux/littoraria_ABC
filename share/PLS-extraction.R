@@ -19,8 +19,8 @@ if (READ_BADF){
 
 print("    # I.2) load priors")
 if (READ_PRIORF) {
-    prior <- read_sim_files(pattern=PREF_PRIOR, ids=ids, path=PATH_PRIOR,
-		n_rep=N_REP, vcol=PRIORS, test_bad=test_bad, bads=bads, is.prior=T)
+    prior <- read_sim_files(pattern=PREF_PRIOR, path=PATH_PRIOR, 
+        n_sets=N_SETS, vcol=PRIORS, tabads=bads, is.prior=T, model=MODEL)
 
     na_prior <- which(is.na(prior), arr.ind=T)
     if (dim(na_prior)[1] > 0) {
@@ -34,8 +34,8 @@ if (READ_PRIORF) {
 
 print("    # I.3) load simulated stats")
 if (READ_STATF) {
-    stat <- read_sim_files(pattern=PREF_STAT, ids=ids, path=PATH_STAT, 
-		n_rep=N_REP, vcol=STATS, test_bad=test_bad, bads=bads, is.prior=F)
+    stat <- read_sim_files(pattern=PREF_STAT, path=PATH_STAT, 
+        n_sets=N_SETS, vcol=STATS, tabads=bads, is.prior=F, model=MODEL)
 
     na_stat <- which(is.na(stat), arr.ind=T)
     if (dim(na_stat)[1] > 0) {

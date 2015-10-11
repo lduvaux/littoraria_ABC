@@ -28,7 +28,7 @@ rm(list = ls())
         rm(stat, na_stat)
     SUMSTAT <- rbind(data_null, data_full)
 
-    # create a model index (as vector)
+    # create model index (as vector)
         n_data_null <- nrow(data_null)
         n_data_full <- nrow(data_full)
     INDEX <- c(rep("null", n_data_null), rep("full", n_data_full))
@@ -36,7 +36,7 @@ rm(list = ls())
 # 2) set parameters of ABC
 
     # indicate required proportion of points nearest the target value
-    TOL <- 0.05
+    TOL <- 0.01
 
     # indicate the type of simulation required
     METHOD <- "neuralnet"
@@ -49,5 +49,8 @@ rm(list = ls())
     # estimate posterior model probabilities
     modsel <- postpr(target=TARGET, index=INDEX, sumstat=SUMSTAT, tol=TOL, method=METHOD)
 
-    # print model probabilities
-    modsel$pred
+    # save estimation of posterior model probabilities
+    save(modsel, file="./modsel.Rdata")
+
+    # summarise result
+    summary(modsel)
