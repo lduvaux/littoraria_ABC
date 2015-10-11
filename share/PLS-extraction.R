@@ -40,13 +40,13 @@ if (READ_STATF) {
     na_stat <- which(is.na(stat), arr.ind=T)
     if (dim(na_stat)[1] > 0) {
         stat <- stat[-na_stat[,1],]
-        prior <- prior[-na_stat[,1],]
-        save(prior, na_prior, file=RDATA_PRIOR)  # save clean matrix of priors as it's quicker to reload a R object
+        prior <- prior[-na_stat[,1],]  # amend the prior matrix accordingly
+        save(prior, na_prior, file=RDATA_PRIOR)  # ... and save it anew
     }
-    save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats as it's quicker to reload a R object
-} else {
+    save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats
     load(RDATA_STAT)
 }
+cat ("\n")
 
 
 print("### II) extract PLS")
