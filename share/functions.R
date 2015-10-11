@@ -12,7 +12,13 @@ read_badf <-  function(pattern, path, model){
 # path: path of input files
 # model: model prefix
 
+    pattern <- glob2rx(pattern, trim.head = T, trim.tail = T)
+    print(paste("pattern is:", pattern))
     f_bads <- dir(pattern = pattern, path = path, full.names = T)
+    if (length(f_bads) == 0) {
+        print("ERROR: no file loaded")
+        quit
+    }
     bads <- as.data.frame(matrix(ncol = 4, nrow = 0))
     IDs <- character(length(f_bads))
 
@@ -49,8 +55,15 @@ read_sim_files <- function(pattern, path, n_sets, vcol, tabads, is.prior, model)
 # vcol: columns of the table to be kept for the analysis
 # tabads: if so which ones?
 # is.prior: are the priors loaded?
-
+    
+    pattern <- glob2rx(pattern, trim.head = T, trim.tail = T)
+    print(paste("pattern is:", pattern))
     f_sims <- dir(pattern = pattern, path = path, full.names = T)
+    if (length(f_sims) == 0) {
+        print("ERROR: no file loaded")
+        print(paste("pattern is:", pattern))
+        quit
+    }
     ftab <- matrix(ncol = length(vcol), nrow = n_sets)
     sets <- 1 ; ifil <- 1 ; nbads <- 0
     
@@ -68,12 +81,14 @@ read_sim_files <- function(pattern, path, n_sets, vcol, tabads, is.prior, model)
         if (ifil==1) colnames(ftab) <- colnames(tab)
 
         # detect and remove bad datasets
-        id <- get_elements(fil, paste(model, ".", sep=""), 2)
-        sub_bads <- subset(tabads, IDs==id)
+        suf <- get_elements(basename(fil), paste(model, ".", sep=""), 2)
+        job.task <- collapse_elements(suf, sep="\\.", what=1:2, colla=".")
+        sub_bads <- subset(tabads, jobID.taskID==job.task)
         if (nrow(sub_bads)>0) {
             tab <- tab[-sub_bads[,"datasetID"],]
             nbads <- nbads + nrow(sub_bads)
         }
+        print(paste("Number of bad datasets: ", nrow(sub_bads), sep=""))
         # fill final table and increment
         npr <- nrow(tab)
         ftab[sets:(sets+npr-1),] <- tab

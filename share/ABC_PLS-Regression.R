@@ -34,7 +34,7 @@ if (READ_PRIORF) {
 
 print("    # I.3) load simulated stats")
 nb_pls <- commandArgs(trailingOnly = T) [1]
-#~if (DEBUG) nb_pls <- 10
+if (DEBUG) nb_pls <- 10
 print(paste("Number of retained PLS components:", nb_pls))
 STATS <- 1:nb_pls   # the number of PLS to keep
 if (READ_STATF) {
@@ -52,6 +52,13 @@ if (READ_STATF) {
 } else {
     load(RDATA_STAT)
 }
+
+if (nrow(prior) != nrow(stat)){
+    print("Error: the number of prior sets is different of the number of statitics sets")
+    print(paste("Number of prior sets: ", nrow(prior), sep=""))
+    print(paste("Number of stat sets: ", nrow(stat), sep=""))
+    quit
+}
 cat ("\n")
 
 
@@ -59,8 +66,11 @@ print("### II) ABC analysis")
 print("    # II.1) load observed stats")
 print("         # Do not mind the warning message about the file incomplete final line")
 F_OBS <- commandArgs(trailingOnly = T) [2]
-#~if (DEBUG) F_OBS <- "ABCstat_observed_formatted.transf.txt.gz"
-print(F_OBS)
+if (DEBUG) {
+    F_OBS <- "ABCstat_observed_formatted.transf.txt.gz"
+    print(F_OBS)
+    NUMNET <- 3
+}
 obs_stat <- unlist(read.table(F_OBS, header=T, sep="\t", strip.white = T, stringsAsFactors = F)[,STATS])
 print(obs_stat)
 
@@ -69,7 +79,6 @@ print("    # II.1) perform ABC")
 if (!LOAD_REG)
 {
     print("    # Compute regression")
-#~    if (DEBUG) NUMNET <- 3
     logitbd <- LOGITBD(prior)
     print (paste("myres <- abc(target=obs_stat, param=prior, sumstat=stat, tol=", TOL, ", method='", METH, "', transf=VTRANSF, numnet=", NUMNET, ", sizenet=", SIZENET, ", trace=T, logit.bounds=logitbd)", sep=""))
     myres <- abc(target=obs_stat, param=prior, sumstat=stat, tol=TOL, method=METH, transf=VTRANSF, numnet=NUMNET, sizenet=SIZENET, trace=T, logit.bounds=logitbd)

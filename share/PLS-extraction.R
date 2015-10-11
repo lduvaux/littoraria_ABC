@@ -46,6 +46,13 @@ if (READ_STATF) {
     save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats
     load(RDATA_STAT)
 }
+
+if (nrow(prior) != nrow(stat)){
+    print("Error: the number of prior sets is different of the number of statitics sets")
+    print(paste("Number of prior sets: ", nrow(prior), sep=""))
+    print(paste("Number of stat sets: ", nrow(stat), sep=""))
+    quit
+}
 cat ("\n")
 
 
