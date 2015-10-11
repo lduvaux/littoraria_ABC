@@ -7,8 +7,7 @@ source("./functions.R")
 print("### I) load data")
 print("    # I.1) load bad simuls")
 if (READ_BADF){
-    lbads <- read_badf(pattern=PREF_BADS, path=PATH_BADS, n_files=N_FILES,
-        n_rep=N_REP, model=MODEL)
+    lbads <- read_badf(pattern=PREF_BADS, path=PATH_BADS, model=MODEL)
     bads <- lbads$bads
     test_bad <- lbads$test_bad
     ids <- lbads$IDs
