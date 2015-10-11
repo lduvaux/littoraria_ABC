@@ -1,25 +1,23 @@
-#~DEBUG <- F  # set to true if you want to make some quick tests
-N_FILES <- 572   # number of [prior | stat] files 
-N_REP <- 1750    # number of datasets per file
-N_DATA <- N_FILES * N_REP
+DEBUG <- T  # set to true if you want to make some quick tests
+N_SETS <- 3000  # total number of datasets
 MODEL <- "null_interspeNoMig"
 
 # bad simuls
 READ_BADF <- T  # do I load bad simulation text file? if not I load the Rdata bad simulation file
-PREF_BADS <- paste("Badsimul_thres1Pc_", MODEL ,sep="")
+PREF_BADS <- paste("Badsimul_thres1Pc_", MODEL, "*txt.gz", sep="")
 PATH_BADS <- "../01_prior2stats/"
 RDATA_BAD <- paste(PREF_BADS, "Rdata", sep=".")
 
 # priors
 READ_PRIORF <- T    # do I load prior text file? if not I load Rdata prior file
-PREF_PRIOR <- paste("priors_",MODEL,sep="")
+PREF_PRIOR <- paste("priors_", MODEL, "*txt.gz", sep="")
 PATH_PRIOR <-  PATH_BADS
 PRIORS <- c(1:5, 7, 9, 11, 12, 15) # vector of parameters to be kept for the abc analysis
 RDATA_PRIOR <- paste(PREF_PRIOR, "Rdata", sep=".")
 
 # simulated stats
 READ_STATF <- T    # do I load stat text file? if not I load Rdata stat file
-PREF_STAT <- paste("ABCstat_", MODEL, sep="")
+PREF_STAT <- paste("ABCstat_", MODEL, "*txt.gz", sep="")
 PATH_STAT <- "./"
 RDATA_STAT <- paste(PREF_STAT, "Rdata", sep=".")
 
