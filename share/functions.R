@@ -44,7 +44,13 @@ read_badf <-  function(pattern, path, model){
         # increment
         ite <- ite + nst
     }
+    
+    # print summary and return results
     test_bad <- nrow(bads) > 0
+    print("----")
+    print("Summary of loaded data:")
+    print(paste("    * Number of loaded files: ", ifil, sep=""))
+    print(paste("    * Bad datasets found: ", nrow(bads), sep=""))
     return(list(bads=bads, test_bad=test_bad, IDs=IDs))
 }
 
@@ -64,7 +70,11 @@ read_sim_files <- function(pattern, path, n_sets, vcol, tabads, is.prior, model)
         print(paste("pattern is:", pattern))
         quit
     }
-    ftab <- matrix(ncol = length(vcol), nrow = n_sets)
+    # set the table to a size of n_sets rows then extend if needed
+    # much quicker than extend it at each iteration
+    # take care to convert the matrix as data.frame as matrices cannot 
+    # be extended using indexes whereas data.frame can.
+    ftab <- as.data.frame(matrix(ncol = length(vcol), nrow = n_sets))
     sets <- 1 ; ifil <- 1 ; nbads <- 0
     
     # we want to read files as long as we haven't loaded n_sets datasets
@@ -89,6 +99,7 @@ read_sim_files <- function(pattern, path, n_sets, vcol, tabads, is.prior, model)
             nbads <- nbads + nrow(sub_bads)
         }
         print(paste("Number of bad datasets: ", nrow(sub_bads), sep=""))
+
         # fill final table and increment
         npr <- nrow(tab)
         ftab[sets:(sets+npr-1),] <- tab
@@ -102,6 +113,15 @@ read_sim_files <- function(pattern, path, n_sets, vcol, tabads, is.prior, model)
             break
         }
     }
-    if (nbads>0) ftab <- ftab [-(sets:n_sets),]  # remove bad datasets
+    
+    # remove bad datasets
+    if (sets <= nrow(ftab)){  
+        ftab <- ftab [-(sets:nrow(ftab)),]}
+    
+    # print summary and return table
+    print("----")
+    print("Summary of loaded data:")
+    print(paste("    * Number of loaded files: ", ifil-1, sep=""))
+    print(paste("    * Number of loaded datasets: ", nrow(ftab), sep=""))
     return(ftab)
 }
