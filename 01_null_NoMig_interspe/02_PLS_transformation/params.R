@@ -1,7 +1,7 @@
 # How many datasets to load?
     # the original find_pls.R script reads 10,000 sets of stats and params
     # ben Jackson used 50,000 datasets in Butlin et al. Evolution 2014
-N_SETS <- 3000  # total number of datasets
+N_SETS <- 50000  # total number of datasets
 MODEL <- "null_interspeNoMig"
 
 # bad simuls
