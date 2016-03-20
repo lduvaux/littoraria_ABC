@@ -60,19 +60,19 @@ end
 	@par N				[N1, N2, N3, N4]
 
 	# Uniform priors on migration rates Mij: [1e-3 - 1e1]
-	M12 = 10.0 ^ (rand() * (1 - (-3)) - 3)	# intra-spe: different for both species
+	M12 = 10.0 ^ (rand() * (1 - (-3)) - 3)	# intra-spe: all equal
 	M21 = M12								#
-	M34 = 10.0 ^ (rand() * (1 - (-3)) - 3)	#
-	M43 = M34								#
+	M34 = M12								#
+	M43 = M12								#
 	M23 = 10.0 ^ (rand() * (1 - (-3)) - 3)	# inter-spe: all equal
 	M32 = M23								#
 	@par mig			[M12, M21, M23, M32, M34, M43]
 
 	# uniform priors on historical events (in years):
+	T1 = rand() * (50e3 - 1e3) + 1e3		# [1e3 - 5e4] years
 	T4 = rand() * (5e6 - 5e5) + 5e5			# [5e5 - 5e6] years
-	T2 = rand() * (T4 - 50) + 50			# [50 - T4] years
-	T3 = rand() * (T4 - 50) + 50			# [50 - T4] years
-	T1 = rand() * (min(T2, T3) - 0) + 0		# [0 - min(T2, T3)] years
+	T2 = rand() * (T4 - T1) + T1			# [T1 - T4] years
+	T3 = rand() * (T4 - T1) + T1			# [T1 - T4] years
 		# convert times in unit of 4N0 generations! (1 generation a year)
 	T1 = T1 / (4 * n0)
 	T2 = T2 / (4 * n0)

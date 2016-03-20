@@ -7,7 +7,8 @@ source("./functions.R")
 print("### I) load data")
 print("    # I.1) load bad simuls")
 if (READ_BADF){
-    lbads <- read_badf(pattern=PREF_BADS, path=PATH_BADS, model=MODEL)
+    lbads <- read_badf(pattern=PREF_BADS, path=PATH_BADS, n_files=N_FILES,
+        n_rep=N_REP, model=MODEL)
     bads <- lbads$bads
     test_bad <- lbads$test_bad
     ids <- lbads$IDs
@@ -19,8 +20,8 @@ if (READ_BADF){
 
 print("    # I.2) load priors")
 if (READ_PRIORF) {
-    prior <- read_sim_files(pattern=PREF_PRIOR, path=PATH_PRIOR, 
-        n_sets=N_SETS, vcol=PRIORS, tabads=bads, is.prior=T, model=MODEL)
+    prior <- read_sim_files(pattern=PREF_PRIOR, ids=ids, path=PATH_PRIOR,
+		n_rep=N_REP, vcol=PRIORS, test_bad=test_bad, bads=bads, is.prior=T)
 
     na_prior <- which(is.na(prior), arr.ind=T)
     if (dim(na_prior)[1] > 0) {
@@ -34,26 +35,19 @@ if (READ_PRIORF) {
 
 print("    # I.3) load simulated stats")
 if (READ_STATF) {
-    stat <- read_sim_files(pattern=PREF_STAT, path=PATH_STAT, 
-        n_sets=N_SETS, vcol=STATS, tabads=bads, is.prior=F, model=MODEL)
+    stat <- read_sim_files(pattern=PREF_STAT, ids=ids, path=PATH_STAT, 
+		n_rep=N_REP, vcol=STATS, test_bad=test_bad, bads=bads, is.prior=F)
 
     na_stat <- which(is.na(stat), arr.ind=T)
     if (dim(na_stat)[1] > 0) {
         stat <- stat[-na_stat[,1],]
-        prior <- prior[-na_stat[,1],]  # amend the prior matrix accordingly
-        save(prior, na_prior, file=RDATA_PRIOR)  # ... and save it anew
+        prior <- prior[-na_stat[,1],]
+        save(prior, na_prior, file=RDATA_PRIOR)  # save clean matrix of priors as it's quicker to reload a R object
     }
-    save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats
+    save(stat, na_stat, file=RDATA_STAT)  # save clean matrix of stats as it's quicker to reload a R object
+} else {
     load(RDATA_STAT)
 }
-
-if (nrow(prior) != nrow(stat)){
-    print("Error: the number of prior sets is different of the number of statitics sets")
-    print(paste("Number of prior sets: ", nrow(prior), sep=""))
-    print(paste("Number of stat sets: ", nrow(stat), sep=""))
-    quit
-}
-cat ("\n")
 
 
 print("### II) extract PLS")
