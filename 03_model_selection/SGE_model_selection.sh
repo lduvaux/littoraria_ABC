@@ -25,7 +25,7 @@ source timeused
 
 ## 0) set variables
     # Model selection R script
-R_script=model_selection_ABC
+modsel_script=model_selection_ABC
 
 
 ## 1) Print miscellaneous variables for the log file
@@ -40,7 +40,7 @@ echo "# working directory: ${PWD}"; echo ""
 
 ## 2) perform model selection
 echo "## 3) perform model selection"
-Rscript ${R_script}.R ${R_script}.${jobid}.log
+Rscript ${modsel_script}.R ${modsel_script}.${jobid}.log
 
 
 # display time

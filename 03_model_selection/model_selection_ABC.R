@@ -8,7 +8,7 @@ rm(list = ls())
 # 1) import data
 
     # load observed summary statistics (as vector)
-    obs_stat <- read.table(file="../../ABCstat_observed_formatted.txt.gz", h=T)
+    obs_stat <- read.table(file="../ABCstat_observed_formatted.txt.gz", h=T)
         # remove dataset column
         obs_stat <- obs_stat[,-1]
         # create vector of stats to be kept
@@ -19,11 +19,11 @@ rm(list = ls())
 
     # load simulated summary statistics (as matrix or data frame)
         # null model
-        load('../01_stats_objects/01_null/ABCstat_null_interspeNoMig*txt.gz.Rdata')
+        load('../01_null_NoMig_interspe/02_PLS_transformation/ABCstat_null_interspeNoMig.Rdata')
         data_null <- stat
         rm(stat, na_stat)
         # full model
-        load('../01_stats_objects/02_full/ABCstat_full_interspeMig*txt.gz.Rdata')
+        load('../02_full_Mig_interspe/02_PLS_transformation/ABCstat_full_interspeMig.Rdata')
         data_full <- stat
         rm(stat, na_stat)
     SUMSTAT <- rbind(data_null, data_full)
