@@ -1,4 +1,4 @@
-N_SETS <- 1e6  # total number of datasets
+N_SETS <- 990515  # total number of datasets
 MODEL <- "full_interspeMig"
 
 # bad simuls

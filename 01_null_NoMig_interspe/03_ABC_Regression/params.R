@@ -1,5 +1,5 @@
-DEBUG <- T  # set to true if you want to make some quick tests
-N_SETS <- 3000  # total number of datasets
+DEBUG <- F  # set to true if you want to make some quick tests
+N_SETS <- 985953  # total number of datasets
 MODEL <- "null_interspeNoMig"
 
 # bad simuls
