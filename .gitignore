@@ -1,13 +1,1 @@
-*.swp
-*.txt
-*.gz
-*~*
-seedms
-*.pdf
-*.sh.o*
-*.Rdata
-*.log
-.DS_Store
-.Rapp.history
-!ABCstat_observed.txt
-Mauricio_results/
+
