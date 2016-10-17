@@ -1,2 +1,35 @@
+# forbid all files!(any file matching the following patterns is exclude 
+    # from git control)
+*
+
+# then set exceptions to be included (thanks to the '!' symbol, even if they contain
+    # the above patterns, the files matching the above patterns will be included)
 .DS_Store
 .Rapp.history
+#!*.csv
+#!*.cfg
+#!*.dummy
+#!*.error
+#!*.errors
+!.gitignore
+!.gitignore_backup
+!*Makefile*
+!*.md
+!*.ods
+!*.odt
+!*.py
+#!*.pptx
+!*.jl
+!*.pl
+!*README*
+!*.R
+!*.r
+!*.sh
+!*.template
+#!.txt
+
+# specific files to save
+!ListOfStats.txt
+
+# ...even if they are in subdirectories
+!*/
