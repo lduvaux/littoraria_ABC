@@ -1,5 +1,5 @@
 DEBUG <- F  # set to true if you want to make some quick tests
-N_SETS <- 1e5  # total number of datasets
+N_SETS <- 1e6  # total number of datasets
 MODEL <- "NM"
 
 # bad simuls
@@ -23,7 +23,7 @@ RDATA_STAT <- paste(PREF_STAT, "Rdata", sep=".")
 
 # ABC parameters
 LOAD_REG <- F
-TOL <- 0.05
+TOL <- 0.01
     # TOL: proportion of points accepted nearest the target values.
     # 0.05 good for an initial test with 1e5 datasets (i.e. 5e3 datasets retained)
     # for the final estimation (1e6 simulated datasets), 0.01 is a better value (1e4 datasets retained)

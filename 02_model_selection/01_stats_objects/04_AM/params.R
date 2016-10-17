@@ -1,4 +1,4 @@
-N_SETS <- 1e5  # total number of datasets
+N_SETS <- 1e6  # total number of datasets
 MODEL <- "AM"
 
 # bad simuls

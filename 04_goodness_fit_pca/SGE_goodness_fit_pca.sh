@@ -24,8 +24,8 @@ source timeused
 
 
 ## 0) set variables
-    # Model selection R script
-R_script=model_selection_ABC
+    # Goodness of fit PCA R script
+R_script=goodness_fit_pca
 
 
 ## 1) Print miscellaneous variables for the log file
@@ -38,8 +38,8 @@ echo "# taskid: ${taskid}"
 echo "# working directory: ${PWD}"; echo ""
 
 
-## 2) perform model selection
-echo "## 2) perform model selection"
+## 2) run goodness of fit PCA
+echo "## 2) run goodness of fit PCA"
 R CMD BATCH ${R_script}.R ${R_script}.${jobid}.log
 
 

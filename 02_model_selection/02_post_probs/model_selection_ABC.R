@@ -46,7 +46,7 @@ rm(list = ls())
 # 2) set parameters of ABC
 
     # indicate required proportion of points nearest the target value
-    TOL <- 0.05
+    TOL <- 0.01
 
     # indicate the type of simulation required
     METHOD <- "neuralnet"
