@@ -13,7 +13,7 @@ to allow the scripts to run properly. This README file also explains how
 the different scripts should be used. Scripts are commented to provide 
 further information about their specific use.
 Note that the workflow is also available on github at:
-https://github.com/lduvaux/littoraria_ABC2015
+https://github.com/lduvaux/littoraria_ABC
 
 NOTICE
 
