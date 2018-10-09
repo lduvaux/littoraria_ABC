@@ -13,7 +13,7 @@ to allow the scripts to run properly. This README file also explains how
 the different scripts should be used. Scripts are commented to provide 
 further information about their specific use.
 Note that the workflow is also available on github at:
-https://github.com/lduvaux/littoraria_ABC
+https://github.com/lduvaux/littoraria_ABC2015
 
 NOTICE
 
@@ -27,9 +27,9 @@ NOTICE
 * In order to better understand the worflow, the authors strongly suggest 
   to ABC beginners to read the following excellent introductions to ABC
   analyses:
-    * Csilléry et al. 2012. abc: an R package for approximate Bayesian 
+      - Csilléry et al. 2012. abc: an R package for approximate Bayesian 
          computation (ABC). Methods in Ecology and Evolution.
-    * Csilléry et al. 2015. Approximate Bayesian Computation (ABC) in R:
+      - Csilléry et al. 2015. Approximate Bayesian Computation (ABC) in R:
          A Vignette. (Vignette of the abc R package)
          https://cran.r-project.org/web/packages/abc/vignettes/abcvignette.pdf
 * For more information or in order to report a possible problem, please
